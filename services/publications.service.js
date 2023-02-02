@@ -83,7 +83,7 @@ class PublicationsService {
     return votes
   }
 
-  async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url, tags }) {
+  async createPublication({ profile_id, publication_type_id, title, description, urlShare, tags }) {
     const transaction = await models.sequelize.transaction()
 
     try {
@@ -93,10 +93,8 @@ class PublicationsService {
         publication_type_id: publication_type_id,
         title: title,
         description: description,
-        content: content,
-        picture: picture,
-        city_id: city_id,
-        image_url: image_url
+        content: urlShare,
+        city_id: 1,
       }, { transaction })
 
       let tags_ids = tags.split(',')

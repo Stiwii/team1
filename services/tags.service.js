@@ -54,6 +54,18 @@ class TagsService {
     return tag
   }
 
+  async getTagsOr404(tags) {
+    let arrayTags = tags.split(',')
+    let tag = await models.Tags.findAll({
+      where: {
+        id: arrayTags
+      }
+    })
+    // if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
+
+    return tag
+  }
+
   //Return not an Instance raw:true | we also can converted to Json instead
   async getTag(id) {
     let tag = await models.Tags.findByPk(id, { raw: true })

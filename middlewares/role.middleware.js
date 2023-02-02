@@ -1,6 +1,7 @@
 const CustomError = require('../utils/custom-error')
 
 const roleMiddleware = (request, response, next) => {
+  console.log();
   if (request.user.role === 'admin') {
     next()
   } else {

@@ -100,6 +100,7 @@ class UsersService {
         }
       }]
     })
+    if (!user) throw new CustomError('Not found user', 404, 'Not Found')
     return user
   }
 

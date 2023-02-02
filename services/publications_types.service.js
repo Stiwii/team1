@@ -38,7 +38,7 @@ class PublicationsTypesService {
       let newPublicationType = await models.Publications_types.create({
         name: obj.name,
         description: obj.description
-        
+
       }, { transaction })
 
       await transaction.commit()
@@ -50,6 +50,14 @@ class PublicationsTypesService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getPublicationOr404(id) {
+    let publicationType = await models.Publications_types.findByPk(id)
+
+    if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
+
+    return publicationType
+  }
+
+  async getPublicationTypeOr404(id) {
     let publicationType = await models.Publications_types.findByPk(id)
 
     if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
