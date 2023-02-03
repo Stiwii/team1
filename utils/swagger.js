@@ -89,7 +89,7 @@ const options = {
         },
         Publications: {
           type: 'object',
-          required: ['profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id'],
+          required: ['profile_id', 'publication_type_id', 'title', 'description', 'urlShare','tags'],
           properties: {
             // profile: {
             //   type: 'string',
@@ -305,9 +305,6 @@ const options = {
                     },
                     lastName: {
                       type: 'string', required: true, example: 'newLastName'
-                    },
-                    username: {
-                      type: 'string', required: true, example: 'newUserName'
                     },
                     email: {
                       type: 'string', unique: true, format: 'email', required: true, example: 'new@email.com'

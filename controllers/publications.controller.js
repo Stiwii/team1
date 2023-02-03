@@ -1,6 +1,7 @@
 const PublicationsService = require('../services/publications.service')
 const PublicationsTypeService = require('../services/publications_types.service')
 const TagsService = require('../services/tags.service')
+const CustomError = require('../utils/custom-error')
 const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 const publicationsService = new PublicationsService()
@@ -56,26 +57,17 @@ const addPublication = async (request, response, next) => {
 
   try {
     let profile_id = request.user.profileId
-    let { title,publication_type_id, description, urlShare, tags } = request.body
-    // let checkPublicationType = publicationsTypeService.getPublicationTypeOr404(publication_type_id)
-    // let checkTags = tagsService.getTagsOr404(tags)
-    let publication = await publicationsService.createPublication({ profile_id, publication_type_id, title, description, urlShare, tags })
-
-    return response.status(201).json({ results: publication })
+    let { title, publication_type_id, description, urlShare, tags } = request.body
+    let checkPublicationType = publicationsTypeService.getPublicationTypeOr404(publication_type_id)
+    let checkTags = await tagsService.getTagsOr404(tags)
+    if (checkPublicationType && checkTags && description && urlShare && title) {
+      let publication = await publicationsService.createPublication({ profile_id, publication_type_id, title, description, urlShare, tags })
+      return response.status(201).json({ results: publication })
+    } else {
+      throw new CustomError('Variables not defined in the Body according to example request', 400, 'Invalid parameters')
+    }
   } catch (error) {
-    return error
-    // response.status(400).json({
-    //   message: error.message, fields: {
-    //     publication_type_id: 'number',
-    //     title: 'string',
-    //     description: 'string',
-    //     content: 'string',
-    //     picture: 'string',
-    //     city_id: 'number',
-    //     image_url: 'string_URL',
-    //     tags: 'tag1,tag2,etc'
-    //   }
-    // })
+    return next(error)
   }
 }
 

@@ -1,7 +1,7 @@
 const models = require('../database/models')
 const uuid = require('uuid')
 const { Op } = require('sequelize')
-const { CustomError } = require('../utils/custom-error')
+const  CustomError  = require('../utils/custom-error')
 
 class ProfilesService {
 
