@@ -8,22 +8,22 @@ module.exports = {
       await queryInterface.bulkInsert('publications_types', [
         {
           id: '1',
-          name: 'event',
-          description: 'event',
+          name: 'Marcas y tiendas',
+          description: 'Marcas y tiendas',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
           id: '2',
-          name: 'concert',
+          name: 'Artistas y conciertos',
           description: 'concert',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
           id: '3',
-          name: 'tournament',
-          description: 'tournament',
+          name: 'Torneos',
+          description: 'Torneos',
           created_at: new Date(),
           updated_at: new Date()
         }
