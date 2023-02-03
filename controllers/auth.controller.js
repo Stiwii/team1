@@ -12,7 +12,7 @@ const logIn = async (request, response, next) => {
   const { email, password } = request.body
   try {
     const user = await authService.checkUsersCredentials(email, password)
-    if (user) {
+    if (!(user instanceof CustomError)) {
       const token = jwt.sign({
         id: user.id,
         email: user.email,
@@ -37,9 +37,9 @@ const logIn = async (request, response, next) => {
         message: 'Correct Credentials!',
         token: [{ 'public': token }]
       })
-
-    } else {
-      throw new CustomError('The email or password are incorrect', 401, 'Invalid Credentials')
+    } 
+    else {
+      throw user
     }
   } catch (error) {
     next(error)

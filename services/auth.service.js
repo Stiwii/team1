@@ -1,4 +1,5 @@
 const UsersService = require('../services/users.service')
+const  CustomError  = require('../utils/custom-error')
 const { comparePassword } = require('../utils/crypto')
 const usersService = new UsersService()
 const jwt = require('jsonwebtoken')
@@ -12,11 +13,10 @@ class AuthService {
   async checkUsersCredentials(email, password) {
     try {
       let user = await usersService.getUserByEmail(email)
+      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
       let verifyPassword = comparePassword(password, user.password)
-      if (verifyPassword) {
-        return user
-      }
-      return null
+      if (!verifyPassword) throw new CustomError('the password entered with matches the user', 401, 'Password is incorrect')
+      return user
     } catch (error) {
       return error
     }
