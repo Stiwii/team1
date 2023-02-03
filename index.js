@@ -31,7 +31,6 @@ if (process.env.NODE_ENV === 'production') {
   /* For Error ERR_BLOCKED_BY_RESPONSE.NotSameOrigin 200 
        https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
   */
-  // console.log("GAAAAAAAAAAAAAA");
   app.use(helmet({ crossOriginResourcePolicy: false }))
 } else {
   app.use(cors())

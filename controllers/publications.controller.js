@@ -39,7 +39,6 @@ const getPublicationsofUser = async (request, response, next) => {
     const { id } = request.params
     const profileId = request.user.profileId
     const userId = request.user.id
-    console.log(profileId)
     if (id == userId) {
       let publications = await publicationsService.findAndCount2(query, profileId)
       const results = getPagingData(publications, page, limit)

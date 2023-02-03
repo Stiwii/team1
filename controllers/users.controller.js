@@ -40,13 +40,13 @@ const registerUser = async (request, response, next) => {
     let errorMessage = null
     let user = await usersService.setUser(body)
     try {
-      await mailer.sendMail({
-        from: process.env.MAIL_SEND,
-        to: user.email,
-        subject: `Verify account ${user.firstName} `,
-        html: `<h1>Enter the following link to verify your account: ${process.env.DOMAIN}/api/v1/auth/verify-user/${user.id}</h1> `,
-        text: 'Thanks you',
-      })
+      // await mailer.sendMail({
+      //   from: process.env.MAIL_SEND,
+      //   to: user.email,
+      //   subject: `Verify account ${user.firstName} `,
+      //   html: `<h1>Enter the following link to verify your account: ${process.env.DOMAIN}/api/v1/auth/verify-user/${user.id}</h1> `,
+      //   text: 'Thanks you',
+      // })
     } catch (error) {
       errorCounter += 1
       errorMessage = 'Error to send email'
