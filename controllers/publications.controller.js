@@ -57,7 +57,7 @@ const addPublication = async (request, response, next) => {
   try {
     let profile_id = request.user.profileId
     let { title, publication_type_id, description, urlShare, tags } = request.body
-    let checkPublicationType = publicationsTypeService.getPublicationTypeOr404(publication_type_id)
+    let checkPublicationType = await publicationsTypeService.getPublicationTypeOr404(publication_type_id)
     let checkTags = await tagsService.getTagsOr404(tags)
     if (checkPublicationType && checkTags && description && urlShare && title) {
       let publication = await publicationsService.createPublication({ profile_id, publication_type_id, title, description, urlShare, tags })
@@ -66,7 +66,7 @@ const addPublication = async (request, response, next) => {
       throw new CustomError('Variables not defined in the Body according to example request', 400, 'Invalid parameters')
     }
   } catch (error) {
-    return next(error)
+    next(error)
   }
 }
 
