@@ -897,7 +897,7 @@ const options = {
             {
               name: 'tags',
               in: 'query',
-              description: 'Tags ID to filter',
+              description: 'Tags ID to filter | All the tags that you want to filter must be inside a string separated by commas',
               example: '1,2,3'
             }
           ],
