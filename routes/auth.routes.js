@@ -8,9 +8,9 @@ const { registerUser } = require('../controllers/users.controller')
 router.post('/login', logIn) //1 complete
 router.post('/sign-up', registerUser) //2
 
-// router.post('/forget-password', forgetPassword) //DEMO
+router.post('/forget-password', forgetPassword) //DEMO
 
-// router.post('/change-password/:token', restorePassword) //DEMO
+router.post('/change-password/:token', restorePassword) //DEMO
 
 // router.post('/update-password', authServices.postRecoveryToken)
 // router.patch('/recovery-password/:id', authServices.patchPassword)

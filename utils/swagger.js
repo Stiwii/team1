@@ -438,203 +438,203 @@ const options = {
                   }
                 }
               }
+            },
+            401: {
+              description: 'Invalid Credentials!',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      errorName: {
+                        type: 'string', example: 'Invalid Credentials!'
+                      },
+                      message: {
+                        type: 'array', example: 'The email or password are incorrect'
+
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Bad Request',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      errorName: {
+                        type: 'string', example: 'Bad Request'
+                      },
+                      message: {
+                        type: 'array', example: 'Error Message'
+
+                      }
+                    }
+                  }
+                }
+              }
+
+            },
+            500: {
+              description: 'Internal Server Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      errorName: {
+                        type: 'string', example: 'Internal Server Error'
+                      },
+                      message: {
+                        type: 'array', example: 'Error Message'
+
+                      }
+                    }
+                  }
+                }
+              }
             }
-            // 401: {
-            //   description: 'Invalid Credentials!',
-            //   content: {
-            //     'application/json': {
-            //       schema: {
-            //         type: 'object',
-            //         properties: {
-            //           errorName: {
-            //             type: 'string', example: 'Invalid Credentials!'
-            //           },
-            //           message: {
-            //             type: 'array', example: 'The email or password are incorrect'
-
-            //           }
-            //         }
-            //       }
-            //     }
-            //   }
-            // },
-            // 400: {
-            //   description: 'Bad Request',
-            //   content: {
-            //     'application/json': {
-            //       schema: {
-            //         type: 'object',
-            //         properties: {
-            //           errorName: {
-            //             type: 'string', example: 'Bad Request'
-            //           },
-            //           message: {
-            //             type: 'array', example: 'Error Message'
-
-            //           }
-            //         }
-            //       }
-            //     }
-            //   }
-
-            // },
-            // 500: {
-            //   description: 'Internal Server Error',
-            //   content: {
-            //     'application/json': {
-            //       schema: {
-            //         type: 'object',
-            //         properties: {
-            //           errorName: {
-            //             type: 'string', example: 'Internal Server Error'
-            //           },
-            //           message: {
-            //             type: 'array', example: 'Error Message'
-
-            //           }
-            //         }
-            //       }
-            //     }
-            //   }
-            // }
           }
         }
       },
-      // '/api/v1/auth/forget-password': {
-      //   post: {
-      //     tags: [
-      //       'Auth'
-      //     ],
-      //     summary: 'Recover password',
-      //     description: 'Recover account by mail, you have 15min to use the link in the email',
-      //     operationId: 'forgetPassword',
-      //     requestBody: {
-      //       description: 'Email you want to recover',
-      //       content: {
-      //         'application/json': {
-      //           schema: {
-      //             type: 'object',
-      //             properties: {
-      //               email: {
-      //                 type: 'string', format: 'email', required: true, example: 'unknown@email.com'
-      //               }
-      //             }
-      //           }
-      //         }
-      //       },
-      //       required: true
-      //     },
-      //     responses: {
-      //       200: {
-      //         description: 'Successful operation',
-      //         content: {
-      //           'application/json': {
-      //             schema: {
-      //               type: 'object',
-      //               properties: {
-      //                 results: {
-      //                   type: 'object',
-      //                   properties: {
-      //                     message: {
-      //                       type: 'string',
-      //                       example: 'Email sended!, Check your inbox'
-      //                     },
-      //                     errors: {
-      //                       type: 'object',
-      //                       properties: {
-      //                         counter: {
-      //                           type: 'integer',
-      //                           example: '0'
-      //                         },
-      //                         message: {
-      //                           type: 'string',
-      //                           example: 'null'
-      //                         }
-      //                       }
-      //                     }
-      //                   }
-      //                 }
-      //               }
-      //             }
-      //           }
-      //         }
-      //       },
-      //       'Error?': {
-      //         description: 'The StatusCode shows HTTP response status code',
-      //         content: {
-      //           'application/json': {
-      //             schema: {
-      //               '$ref': '#/components/schemas/Error'
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // },
-      // '/api/v1/auth/change-password/{token}': {
-      //   post: {
-      //     tags: [
-      //       'Auth'
-      //     ],
-      //     summary: 'Change password with token',
-      //     description: 'The token is in your email, has an expiration date of 15min when created',
-      //     operationId: 'restorePassword',
-      //     parameters: [
-      //       {
-      //         name: 'token',
-      //         in: 'path',
-      //         description: 'The token is in your email',
-      //         required: true,
-      //         schema: {
-      //           type: 'string',
-      //           example: 'eyOi......CI6IX'
-      //         }
-      //       }
-      //     ],
-      //     requestBody: {
-      //       description: 'After registering, a verification email will be sent to your email',
-      //       content: {
-      //         'application/json': {
-      //           schema: {
-      //             type: 'object',
-      //             properties: {
-      //               password: { type: 'string', required: true, example: '123' }
-      //             }
-      //           }
-      //         }
-      //       },
-      //       required: true
-      //     },
-      //     responses: {
-      //       200: {
-      //         description: 'Successful operation',
-      //         content: {
-      //           'application/json': {
-      //             schema: {
-      //               type: 'object',
-      //               properties: {
-      //                 message: {
-      //                   type: 'string', example: 'update success'
-      //                 }
-      //               }
-      //             }
-      //           }
-      //         }
-      //       },
-      //       'Error?': {
-      //         description: 'The StatusCode shows HTTP response status code',
-      //         content: {
-      //           'application/json': {
-      //             schema: {
-      //               '$ref': '#/components/schemas/Error'
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // },
+      '/api/v1/auth/forget-password': {
+        post: {
+          tags: [
+            'Auth'
+          ],
+          summary: 'Recover password',
+          description: 'Recover account by mail, you have 15min to use the link in the email',
+          operationId: 'forgetPassword',
+          requestBody: {
+            description: 'Email you want to recover',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    email: {
+                      type: 'string', format: 'email', required: true, example: 'unknown@email.com'
+                    }
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          message: {
+                            type: 'string',
+                            example: 'Email sended!, Check your inbox'
+                          },
+                          errors: {
+                            type: 'object',
+                            properties: {
+                              counter: {
+                                type: 'integer',
+                                example: '0'
+                              },
+                              message: {
+                                type: 'string',
+                                example: 'null'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      '/api/v1/auth/change-password/{token}': {
+        post: {
+          tags: [
+            'Auth'
+          ],
+          summary: 'Change password with token',
+          description: 'The token is in your email, has an expiration date of 15min when created',
+          operationId: 'restorePassword',
+          parameters: [
+            {
+              name: 'token',
+              in: 'path',
+              description: 'The token is in your email',
+              required: true,
+              schema: {
+                type: 'string',
+                example: 'eyOi......CI6IX'
+              }
+            }
+          ],
+          requestBody: {
+            description: 'After registering, a verification email will be sent to your email',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    password: { type: 'string', required: true, example: '123' }
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      message: {
+                        type: 'string', example: 'update success'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       '/api/v1/users/user-info': {
         get: {
           tags: [
