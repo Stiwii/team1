@@ -46,11 +46,16 @@ const options = {
     ],
     components: {
       securitySchemes: {
-        jwtAuth: {
-          description: '<strong>Add JWT before insert token :</strong> JWT 2sdasd.....dsdsdsd',
-          type: 'apiKey',
-          in: 'header',
-          name: 'Authorization'
+        // jwtAuth: {
+        //   description: '<strong>Add JWT before insert token :</strong> JWT 2sdasd.....dsdsdsd',
+        //   type: 'apiKey',
+        //   in: 'header',
+        //   name: 'Authorization'
+        // }
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
         }
       },
       schemas: {
@@ -84,40 +89,55 @@ const options = {
         },
         Publications: {
           type: 'object',
-          required: ['profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id'],
+          required: ['profile_id', 'publication_type_id', 'title', 'description', 'urlShare','tags'],
           properties: {
+            // profile: {
+            //   type: 'string',
+            //   format: 'uuid',
+            //   required:true,
+            //   example: 'newUrl'
+            //},
             publication_type_id: {
               type: 'string',
               format: 'integer',
+              required:true,
               example: '1'
             },
             title: {
               type: 'string',
-              example: 'newTitle'
+              example: 'newTitle',
+              required:true,
             },
             description: {
               type: 'string',
-              example: 'newDescription'
+              example: 'newDescription',
+              required:true,
             },
-            content: {
+            urlShare: {
               type: 'string',
-              example: 'newContent'
+              example: 'newUrl',
+              required:true,
             },
-            picture: {
+            tags: {
               type: 'string',
-              format: 'url',
-              example: 'www.picture.com'
+              example: '1,2,3',
+              required:true,
             },
-            city_id: {
-              type: 'string',
-              format: 'integer',
-              example: '1'
-            },
-            image_url: {
-              type: 'string',
-              format: 'url',
-              example: 'www.image_url'
-            }
+            // picture: {
+            //   type: 'string',
+            //   format: 'url',
+            //   example: 'www.picture.com'
+            // },
+            // city_id: {
+            //   type: 'string',
+            //   format: 'integer',
+            //   example: '1'
+            // },
+            // image_url: {
+            //   type: 'string',
+            //   format: 'url',
+            //   example: 'www.image_url'
+            // }
           }
         },
         States: {
@@ -181,15 +201,19 @@ const options = {
             description: {
               type: 'string', example: 'newDescription'
             },
-            content: {
-              type: 'string', example: 'newContent'
+            // content: {
+            //   type: 'string', example: 'newContent'
+            // },
+            urlShare: {
+              type: 'string',
+              example: 'newUrl'
             },
-            picture: {
-              type: 'string', format: 'url', example: 'www.picture.com'
-            },
-            image_url: {
-              type: 'string', format: 'url', example: 'www.image.com'
-            },
+            // picture: {
+            //   type: 'string', format: 'url', example: 'www.picture.com'
+            // },
+            // image_url: {
+            //   type: 'string', format: 'url', example: 'www.image.com'
+            // },
             created_at: {
               type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
             },
@@ -267,32 +291,30 @@ const options = {
             'Auth'
           ],
           summary: 'Add a new User',
-          description: 'Add a new User',
+          description: 'After registering, a verification email will be sent to your email',
           operationId: 'addUser',
           requestBody: {
-            description: 'After registering, a verification email will be sent to your email',
+            description: 'The email property is unique and the default profile is public',
             content: {
               'application/json': {
                 schema: {
                   type: 'object',
                   properties: {
                     firstName: {
-                      type: 'string', example: 'jh'
+                      type: 'string', required: true, example: 'newFirstName'
                     },
                     lastName: {
-                      type: 'string', example: 'delaCruz'
-                    },
-                    username: {
-                      type: 'string', example: 'jhdelacruz777'
+                      type: 'string', required: true, example: 'newLastName'
                     },
                     email: {
-                      type: 'string', format: 'email', example: 'quebendicion@gmail.com'
+                      type: 'string', unique: true, format: 'email', required: true, example: 'new@email.com'
                     },
                     password: {
-                      type: 'string', example: 'pass1234'
+                      type: 'string', required: true, example: 'pass1234'
                     }
 
                   }
+
                 }
               }
             },
@@ -313,16 +335,16 @@ const options = {
                             type: 'string', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                           },
                           firstName: {
-                            type: 'string', example: 'jh'
+                            type: 'string', example: 'newFirstName'
                           },
                           lastName: {
-                            type: 'string', example: 'delaCruz'
+                            type: 'string', example: 'newLastName'
                           },
                           username: {
-                            type: 'string', example: 'jhdelacruz777'
+                            type: 'string', example: 'newUserName'
                           },
                           email: {
-                            type: 'string', format: 'email', example: 'quebendicion@gmail.com'
+                            type: 'string', format: 'email', example: 'new@gmail.com'
                           },
                           roleId: {
                             type: 'string', format: 'integer', example: '1'
@@ -341,8 +363,8 @@ const options = {
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -370,10 +392,10 @@ const options = {
                   type: 'object',
                   properties: {
                     email: {
-                      type: 'string', example: 'unknown@email.com'
+                      type: 'string', format: 'email', required: true, example: 'unknown@email.com'
                     },
                     password: {
-                      type: 'string', example: 'pass1234'
+                      type: 'string', required: true, example: 'pass1234'
                     }
                   }
                 }
@@ -393,8 +415,8 @@ const options = {
                         type: 'string', example: 'Correct Credentials!'
                       },
                       token: {
-                        type: 'array', 
-                        items: { 
+                        type: 'array',
+                        items: {
                           properties: {
                             public: {
                               type: 'string', example: 'eyJhbGciOiJ......6yJV_adQssw5c'
@@ -409,7 +431,7 @@ const options = {
             },
             'Error?': {
               description: 'The StatusCode shows HTTP response status code',
-              content:{
+              content: {
                 'application/json': {
                   schema: {
                     '$ref': '#/components/schemas/Error'
@@ -429,7 +451,7 @@ const options = {
             //           },
             //           message: {
             //             type: 'array', example: 'The email or password are incorrect'
-                        
+
             //           }
             //         }
             //       }
@@ -448,7 +470,7 @@ const options = {
             //           },
             //           message: {
             //             type: 'array', example: 'Error Message'
-                        
+
             //           }
             //         }
             //       }
@@ -468,7 +490,7 @@ const options = {
             //           },
             //           message: {
             //             type: 'array', example: 'Error Message'
-                        
+
             //           }
             //         }
             //       }
@@ -478,145 +500,145 @@ const options = {
           }
         }
       },
-      '/api/v1/auth/forget-password': {
-        post: {
-          tags: [
-            'Auth'
-          ],
-          summary: 'Recover password',
-          description: 'Recover account by mail, you have 15min to use the link in the email',
-          operationId: 'forgetPassword',
-          requestBody: {
-            description: 'Email you want to recover',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    email: {
-                      type: 'string', example: 'unknown@email.com'
-                    }
-                  }
-                }
-              }
-            },
-            required: true
-          },
-          responses: {
-            200: {
-              description: 'Successful operation',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      results: {
-                        type: 'object',
-                        properties: {
-                          message: {
-                            type: 'string',
-                            example:'Email sended!, Check your inbox'
-                          },
-                          errors: {
-                            type: 'object',
-                            properties: {
-                              counter: {
-                                type: 'integer',
-                                example:'0'
-                              },
-                              message: {
-                                type: 'string',
-                                example:'null'
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            'Error?': {
-              description: 'The StatusCode shows HTTP response status code',
-              content:{
-                'application/json': {
-                  schema: {
-                    '$ref': '#/components/schemas/Error'
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      '/api/v1/auth/change-password/{token}': {
-        post: {
-          tags: [
-            'Auth'
-          ],
-          summary: 'Change password with token',
-          description: 'he token is in your email, has an expiration date of 15min when created',
-          operationId: 'restorePassword',
-          parameters: [
-            {
-              name: 'token',
-              in: 'path',
-              description: 'The token is in your email',
-              required: true,
-              schema: {
-                type: 'string',
-                example: 'asd123n123-123j12h31j2b1i23h.3123123-1231'
-              }
-            }
-          ],
-          requestBody: {
-            description: 'After registering, a verification email will be sent to your email',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties:{
-                    password: {type: 'string', example: '123'} 
-                  }
-                }
-              }
-            },
-            required: true
-          },
-          responses: {
-            200: {
-              description: 'Successful operation',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      message: {
-                        type: 'string', example: 'update success'
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            '400?': {
-              description: 'Error',
-              content: {
-                'application/json': {
-                  schema: {
-                    '$ref': '#/components/schemas/Error'
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
+      // '/api/v1/auth/forget-password': {
+      //   post: {
+      //     tags: [
+      //       'Auth'
+      //     ],
+      //     summary: 'Recover password',
+      //     description: 'Recover account by mail, you have 15min to use the link in the email',
+      //     operationId: 'forgetPassword',
+      //     requestBody: {
+      //       description: 'Email you want to recover',
+      //       content: {
+      //         'application/json': {
+      //           schema: {
+      //             type: 'object',
+      //             properties: {
+      //               email: {
+      //                 type: 'string', format: 'email', required: true, example: 'unknown@email.com'
+      //               }
+      //             }
+      //           }
+      //         }
+      //       },
+      //       required: true
+      //     },
+      //     responses: {
+      //       200: {
+      //         description: 'Successful operation',
+      //         content: {
+      //           'application/json': {
+      //             schema: {
+      //               type: 'object',
+      //               properties: {
+      //                 results: {
+      //                   type: 'object',
+      //                   properties: {
+      //                     message: {
+      //                       type: 'string',
+      //                       example: 'Email sended!, Check your inbox'
+      //                     },
+      //                     errors: {
+      //                       type: 'object',
+      //                       properties: {
+      //                         counter: {
+      //                           type: 'integer',
+      //                           example: '0'
+      //                         },
+      //                         message: {
+      //                           type: 'string',
+      //                           example: 'null'
+      //                         }
+      //                       }
+      //                     }
+      //                   }
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       },
+      //       'Error?': {
+      //         description: 'The StatusCode shows HTTP response status code',
+      //         content: {
+      //           'application/json': {
+      //             schema: {
+      //               '$ref': '#/components/schemas/Error'
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // },
+      // '/api/v1/auth/change-password/{token}': {
+      //   post: {
+      //     tags: [
+      //       'Auth'
+      //     ],
+      //     summary: 'Change password with token',
+      //     description: 'The token is in your email, has an expiration date of 15min when created',
+      //     operationId: 'restorePassword',
+      //     parameters: [
+      //       {
+      //         name: 'token',
+      //         in: 'path',
+      //         description: 'The token is in your email',
+      //         required: true,
+      //         schema: {
+      //           type: 'string',
+      //           example: 'eyOi......CI6IX'
+      //         }
+      //       }
+      //     ],
+      //     requestBody: {
+      //       description: 'After registering, a verification email will be sent to your email',
+      //       content: {
+      //         'application/json': {
+      //           schema: {
+      //             type: 'object',
+      //             properties: {
+      //               password: { type: 'string', required: true, example: '123' }
+      //             }
+      //           }
+      //         }
+      //       },
+      //       required: true
+      //     },
+      //     responses: {
+      //       200: {
+      //         description: 'Successful operation',
+      //         content: {
+      //           'application/json': {
+      //             schema: {
+      //               type: 'object',
+      //               properties: {
+      //                 message: {
+      //                   type: 'string', example: 'update success'
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       },
+      //       'Error?': {
+      //         description: 'The StatusCode shows HTTP response status code',
+      //         content: {
+      //           'application/json': {
+      //             schema: {
+      //               '$ref': '#/components/schemas/Error'
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // },
       '/api/v1/users/user-info': {
         get: {
           tags: [
-            'Auth'
+            'User'
           ],
           summary: 'Get my data',
           description: 'Get my information',
@@ -633,38 +655,38 @@ const options = {
                         type: 'object',
                         properties: {
                           id: {
-                            type:'string', format: 'uuid',example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                           },
                           email: {
-                            type: 'string',format: 'email',example: 'random@mail.com'
+                            type: 'string', format: 'email', example: 'random@mail.com'
                           },
                           username: {
-                            type: 'string',example: 'userName' 
+                            type: 'string', example: 'userName'
                           },
                           profile: {
                             type: 'array',
-                            items:{
-                              properties:{
+                            items: {
+                              properties: {
                                 id: {
-                                  type:'string', format: 'uuid',example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                 },
                                 image_url: {
-                                  type: 'string',format: 'email',example: 'random@mail.com'
+                                  type: 'string', format: 'email', example: 'random@mail.com'
                                 },
                                 code_phone: {
-                                  type: 'string',example: 'userName' 
+                                  type: 'string', example: 'userName'
                                 },
                                 phone: {
-                                  type:'integer', example: '999888777'
+                                  type: 'string', example: '999888777'
                                 },
                                 role: {
                                   type: 'object',
-                                  properties:{
+                                  properties: {
                                     id: {
-                                      type:'integer',example: '1'
+                                      type: 'string', example: '1'
                                     },
                                     name: {
-                                      type: 'string',example: 'public'
+                                      type: 'string', example: 'public'
                                     },
                                   }
                                 },
@@ -675,15 +697,15 @@ const options = {
                             }
                           }
                         }
-                        
+
                       }
                     }
                   }
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -695,10 +717,9 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
-        },
+              bearerAuth: []
+            }]
+        }
       },
       '/api/v1/publications-types': {
         get: {
@@ -1021,7 +1042,7 @@ const options = {
             'Publications'
           ],
           summary: 'Add a publication',
-          description: 'Add a new publication',
+          description: 'Add a new publication,by default it adds the city , also the imageURL (in development)',
           operationId: ' createPublications ',
           requestBody: {
             description: 'After registering, a verification email will be sent to your email',
@@ -1063,9 +1084,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/publications/{publicationId}': {
@@ -1298,8 +1318,8 @@ const options = {
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -1311,9 +1331,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/publications/{publicationId}/votes': {
@@ -1337,6 +1356,22 @@ const options = {
             }
           ],
           responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        example: 'Vote removed'
+                      }
+                    }
+                  }
+                }
+              }
+            },
             201: {
               description: 'Successful operation',
               content: {
@@ -1367,8 +1402,8 @@ const options = {
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -1380,9 +1415,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/users/{userId}': {
@@ -1420,16 +1454,16 @@ const options = {
                             type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                           },
                           first_name: {
-                            type: 'string', example: 'jh'
+                            type: 'string', example: 'nowFirstName'
                           },
                           last_name: {
-                            type: 'string', example: 'delaCruz'
+                            type: 'string', example: 'nowLastName'
                           },
                           email: {
-                            type: 'string', example: 'quebendicion@gmail.com'
+                            type: 'string', example: 'now@email.com'
                           },
                           username: {
-                            type: 'string', example: 'jhdelacruz777'
+                            type: 'string', example: 'nowFirstName'
                           }
                         }
 
@@ -1452,9 +1486,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         },
         put: {
           tags: [
@@ -1483,16 +1516,16 @@ const options = {
                   type: 'object',
                   properties: {
                     username: {
-                      type: 'string', example: 'jhdelacruz777'
+                      type: 'string', example: 'nowUserName'
                     },
                     first_name: {
-                      type: 'string', example: 'jh'
+                      type: 'string', required: true, example: 'nowFirstName'
                     },
                     last_name: {
-                      type: 'string', example: 'delaCruz'
+                      type: 'string', required: true, example: 'nowLastName'
                     },
                     image_url: {
-                      type: 'string', format: 'url', example: 'www.image.com'
+                      type: 'string', format: 'url', example: 'www.nowImage.com'
                     },
                     code_phone: {
                       type: 'integer', example: '55'
@@ -1542,8 +1575,8 @@ const options = {
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -1555,9 +1588,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/users/{userId}/votes': {
@@ -1762,9 +1794,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/users/{userId}/publications': {
@@ -1858,8 +1889,8 @@ const options = {
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -1871,9 +1902,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/users': {
@@ -1929,16 +1959,16 @@ const options = {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                 },
                                 first_name: {
-                                  type: 'string', example: 'jh'
+                                  type: 'string', example: 'nowFirstname'
                                 },
                                 last_name: {
-                                  type: 'string', example: 'delaCruz'
+                                  type: 'string', example: 'nowLastName'
                                 },
                                 email: {
-                                  type: 'string', example: 'quebendicion@gmail.com'
+                                  type: 'string', example: 'email@email.com'
                                 },
                                 username: {
-                                  type: 'string', example: 'jhdelacruz777'
+                                  type: 'string', example: 'nowUserName'
                                 },
                               }
                             }
@@ -1952,7 +1982,7 @@ const options = {
             },
             'Error?': {
               description: 'The StatusCode shows HTTP response status code',
-              content:{
+              content: {
                 'application/json': {
                   schema: {
                     '$ref': '#/components/schemas/Error'
@@ -1963,9 +1993,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/states': {
@@ -2026,12 +2055,12 @@ const options = {
                                 name: {
                                   type: 'string', example: 'nowNameState'
                                 },
-                                created_at: {
-                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                                },
-                                updated_at: {
-                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                                }
+                                // created_at: {
+                                //   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                // },
+                                // updated_at: {
+                                //   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                // }
                               }
                             }
                           }
@@ -2042,8 +2071,8 @@ const options = {
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -2114,12 +2143,12 @@ const options = {
                                 name: {
                                   type: 'string', example: 'nowNameCity'
                                 },
-                                created_at: {
-                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                                },
-                                updated_at: {
-                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                                }
+                                // created_at: {
+                                //   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                // },
+                                // updated_at: {
+                                //   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                // }
                               }
                             }
                           }
@@ -2130,8 +2159,8 @@ const options = {
                 }
               }
             },
-            '400?': {
-              description: 'Error',
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
               content: {
                 'application/json': {
                   schema: {
@@ -2378,9 +2407,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       },
       '/api/v1/tags/{TagId}': {
@@ -2462,9 +2490,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         },
         delete: {
           tags: [
@@ -2532,9 +2559,8 @@ const options = {
           },
           security: [
             {
-              jwtAuth: []
-            }
-          ]
+              bearerAuth: []
+            }]
         }
       }
     }

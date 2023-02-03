@@ -1,7 +1,8 @@
 const models = require('../database/models')
 const uuid = require('uuid')
 const { Op } = require('sequelize')
-const { CustomError } = require('../utils/custom-error')
+
+const  CustomError  = require('../utils/custom-error')
 
 class TagsService {
 
@@ -34,6 +35,7 @@ class TagsService {
   async createTag(name) {
     const transaction = await models.sequelize.transaction()
     try {
+      if(!name)  throw new CustomError('The request parameters do not match the request schema', 404, 'Invalid Parameters')
       let newTag = await models.Tags.create({
         name: name
       }, { transaction })
@@ -52,6 +54,18 @@ class TagsService {
     if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 
     return tag
+  }
+
+  async getTagsOr404(tags) {
+    let arrayTags = tags.split(',')
+    let tag = await models.Tags.findAll({
+      where: {
+        id: arrayTags
+      }
+    })
+    tags= tag.map(item => item.dataValues.id);
+    if (arrayTags.length !== tags.length) throw new CustomError('Not found tag', 404, 'Not Found')
+    return tags
   }
 
   //Return not an Instance raw:true | we also can converted to Json instead

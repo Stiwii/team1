@@ -9,7 +9,7 @@ const UsersService = require('../services/users.service')
 const usersService = new UsersService() 
 
 const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
   secretOrKey: process.env.JWT_SECRET_WORD
 }
 

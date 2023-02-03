@@ -35,7 +35,7 @@ const addVote = async (request, response, next) => {
     console.log(vote)
     if (vote == 1) {
       return response.status(200).json({
-        results: 'Voto Eliminado'
+        results: 'Vote removed'
       })
     } else {
       return response.status(201).json({

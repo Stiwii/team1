@@ -1,6 +1,6 @@
 const models = require('../database/models')
 const { Op } = require('sequelize')
-const { CustomError } = require('../utils/custom-error')
+const  CustomError  = require('../utils/custom-error')
 
 class RolesService {
 

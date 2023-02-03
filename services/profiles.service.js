@@ -1,7 +1,7 @@
 const models = require('../database/models')
 const uuid = require('uuid')
 const { Op } = require('sequelize')
-const { CustomError } = require('../utils/custom-error')
+const  CustomError  = require('../utils/custom-error')
 
 class ProfilesService {
 
@@ -34,7 +34,6 @@ class ProfilesService {
   async createProfile(obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      // console.log('FROM SERVICE PROFILE: ',obj)
       let newProfile = await models.Profiles.create({
         id: uuid.v4(),
         user_id: obj.user_id,

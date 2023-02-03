@@ -2,7 +2,7 @@ const models = require('../database/models')
 const uuid = require('uuid')
 const { hashPassword } = require('../utils/crypto')
 const { Op } = require('sequelize')
-const { CustomError } = require('../utils/custom-error')
+const  CustomError  = require('../utils/custom-error')
 
 
 class UsersService {
@@ -100,6 +100,7 @@ class UsersService {
         }
       }]
     })
+    if (!user) throw new CustomError('Not found user', 404, 'Not Found')
     return user
   }
 
@@ -171,7 +172,7 @@ class UsersService {
 
 
 
-  async setUser({ firstName, lastName, email, username, password }) {
+  async setUser({ firstName, lastName, email, password }) {
     const transaction = await models.sequelize.transaction()
     try {
       let newUser = await models.Users.create({
@@ -179,7 +180,7 @@ class UsersService {
         first_name: firstName,
         last_name: lastName,
         email: email,
-        username: username,
+        username: firstName,
         password: hashPassword(password)
       }, { transaction })
       let newProfile = await models.Profiles.create({
