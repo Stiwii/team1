@@ -1,5 +1,4 @@
 const UsersService = require('../services/users.service')
-const  CustomError  = require('../utils/custom-error')
 const { comparePassword } = require('../utils/crypto')
 const usersService = new UsersService()
 const jwt = require('jsonwebtoken')
@@ -11,18 +10,18 @@ class AuthService {
   }
 
   async checkUsersCredentials(email, password) {
+    // eslint-disable-next-line no-useless-catch
     try {
       let user = await usersService.getUserByEmail(email)
-      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
       let verifyPassword = comparePassword(password, user.password)
-      if (!verifyPassword) throw new CustomError('the password entered with matches the user', 401, 'Password is incorrect')
-      return user
+      if (verifyPassword) return user
     } catch (error) {
-      return error
+      throw error
     }
   }
 
   async createRecoveryToken(email) {
+    // eslint-disable-next-line no-useless-catch
     try {
       let user = await usersService.getUserByEmail(email)
       if (user) {
@@ -37,11 +36,12 @@ class AuthService {
       }
       return null
     } catch (error) {
-      return null
+      throw error
     }
   }
 
   async changePassword({ id, exp }, newPassword, token) {
+    // eslint-disable-next-line no-useless-catch
     try {
       // console.log("FROM CHANGE: ",id,email,exp);
       let userVerified = await usersService.verifiedToken(id, token)
@@ -51,7 +51,7 @@ class AuthService {
       }
       return null
     } catch (error) {
-      return null
+      throw error
     }
   }
 

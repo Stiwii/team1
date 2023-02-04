@@ -2,7 +2,7 @@ const models = require('../database/models')
 const uuid = require('uuid')
 const { hashPassword } = require('../utils/crypto')
 const { Op } = require('sequelize')
-const  CustomError  = require('../utils/custom-error')
+const CustomError = require('../utils/custom-error')
 
 
 class UsersService {
@@ -83,6 +83,7 @@ class UsersService {
         token: token
       }
     })
+    if (!user) throw new CustomError('Not found user', 404, 'Not Found')
     return user
   }
 
@@ -217,6 +218,7 @@ class UsersService {
         }
       }]
     })
+    if (user === null) throw new CustomError('Not found user', 404, 'Not Found')
     return user
   }
   async removeUser(id) {
