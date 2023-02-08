@@ -1000,10 +1000,10 @@ const options = {
             'Publications'
           ],
           summary: 'Add a publication',
-          description: 'Add a new publication,by default it adds the city , also the imageURL (in development) | the token is needed to get the profileId | <strong>VERIFY THAT TAGS EXIST</strong>',
+          description: 'Add a new publication,by default it adds the city , also the imageURL (in development) | the token is needed to get the profileId',
           operationId: ' createPublications ',
           requestBody: {
-            description: 'After registering, a verification email will be sent to your email',
+            description: 'The Tags that the publication has are entered in a string, which is made up of the Tags ids | <strong>VERIFY THAT TAGS EXIST </strong>',
             content: {
               'application/json': {
                 schema: {
