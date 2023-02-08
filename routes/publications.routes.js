@@ -17,6 +17,6 @@ router.route('/:idPublication')
   .delete(passportJWT.authenticate('jwt', { session: false }),checkParam,removePublication)
 
 router.route('/:idPublication/vote')
-  .get(passportJWT.authenticate('jwt', { session: false }),checkParam,addVote)
+  .post(passportJWT.authenticate('jwt', { session: false }),checkParam,addVote)
 
 module.exports = router

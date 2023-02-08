@@ -54,9 +54,9 @@ class UsersService {
 
   //Return not an Instance raw:true | we also can converted to Json instead
   async getUserOr404(id) {
-    let user = await models.Users.findByPk(id, { raw: true })
+    let user = await models.Users.scope('not_email').findByPk(id, { raw: true })
     if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-    return user
+    return user 
   }
 
   async verifiedTokenUser(id, token, exp) {

@@ -1,6 +1,6 @@
 const models = require('../database/models')
 const uuid = require('uuid')
-const { Op } = require('sequelize')
+const { Op, cast, literal } = require('sequelize')
 const  CustomError  = require('../utils/custom-error')
 
 class PublicationsService {
@@ -13,6 +13,9 @@ class PublicationsService {
     const { limit, offset, tags } = query
   
     const options = {
+      attributes:{include:[
+        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+      ]},
       include: [{
         model: models.Cities.scope('get_city'),
         as: 'city',
@@ -119,7 +122,10 @@ class PublicationsService {
     let publication = await models.Publications.scope('get_publication').findOne({
       where: {
         id: idPublication
-      }
+      },
+      attributes:{include:[
+        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+      ]}
       ,
       include: [{
         model: models.Cities.scope('get_city'),
