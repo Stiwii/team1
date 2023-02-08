@@ -32,76 +32,76 @@ class StatesService {
     return states
   }
 
-  async createState(obj) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let newState = await models.States.create({
-        id: uuid.v4(),
-        country_id: obj.country_id,
-        name: obj.name
-      }, { transaction })
+  // async createState(obj) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let newState = await models.States.create({
+  //       id: uuid.v4(),
+  //       country_id: obj.country_id,
+  //       name: obj.name
+  //     }, { transaction })
 
-      await transaction.commit()
-      return newState
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     await transaction.commit()
+  //     return newState
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
   //Return Instance if we do not converted to json (or raw:true)
-  async getStateOr404(id) {
-    let state = await models.States.findByPk(id)
+  // async getStateOr404(id) {
+  //   let state = await models.States.findByPk(id)
 
-    if (!state) throw new CustomError('Not found State', 404, 'Not Found')
+  //   if (!state) throw new CustomError('Not found State', 404, 'Not Found')
 
-    return state
-  }
+  //   return state
+  // }
 
-  //Return not an Instance raw:true | we also can converted to Json instead
-  async getState(id) {
-    let state = await models.States.findByPk(id, { raw: true })
-    return state
-  }
+  // //Return not an Instance raw:true | we also can converted to Json instead
+  // async getState(id) {
+  //   let state = await models.States.findByPk(id, { raw: true })
+  //   return state
+  // }
 
-  async updateState(id, obj) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let state = await models.States.findByPk(id)
+  // async updateState(id, obj) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let state = await models.States.findByPk(id)
 
-      if (!state) throw new CustomError('Not found State', 404, 'Not Found')
+  //     if (!state) throw new CustomError('Not found State', 404, 'Not Found')
 
-      let updatedState = await state.update(obj, {
-        where: {
-          id: id
-        }
-      }, { transaction })
+  //     let updatedState = await state.update(obj, {
+  //       where: {
+  //         id: id
+  //       }
+  //     }, { transaction })
 
-      await transaction.commit()
+  //     await transaction.commit()
 
-      return updatedState
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     return updatedState
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
-  async removeState(id) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let state = await models.States.findByPk(id)
+  // async removeState(id) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let state = await models.States.findByPk(id)
 
-      if (!state) throw new CustomError('Not found State', 404, 'Not Found')
+  //     if (!state) throw new CustomError('Not found State', 404, 'Not Found')
 
-      await state.destroy({ transaction })
+  //     await state.destroy({ transaction })
 
-      await transaction.commit()
+  //     await transaction.commit()
 
-      return state
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     return state
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
 }
 

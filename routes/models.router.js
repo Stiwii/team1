@@ -20,7 +20,6 @@ function routerModels(app) {
   // router.use('/users', isAuthenticatedByPassportJwt.authenticate('jwt', {session: false}) ,routesUsers)//<- middleware here
   // other models here
 
-  // router.use('/users', routesUsers)
   // router.use('/profiles', routesProfiles)
   router.use('/publications-types', routesPublicationsTypes)
   router.use('/publications', routesPublications)

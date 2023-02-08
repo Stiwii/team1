@@ -1,5 +1,6 @@
 const UsersService = require('../services/users.service')
-const mailer = require('../utils/mailer')
+const CustomError = require('../utils/custom-error')
+// const mailer = require('../utils/mailer')
 const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 require('dotenv').config()
@@ -51,7 +52,7 @@ const registerUser = async (request, response, next) => {
     //   errorCounter += 1
     //   errorMessage = 'Error to send email'
     // }
-    return response.status(201).json({ results: user, errors: { counter: errorCounter, message: errorMessage} })
+    return response.status(201).json({ results: user, errors: { counter: errorCounter, message: errorMessage } })
   } catch (error) {
     next(error)
   }
@@ -59,8 +60,8 @@ const registerUser = async (request, response, next) => {
 
 const getUser = async (request, response, next) => {
   try {
-    let { id } = request.params
-    let users = await usersService.getMyUser(id)
+    let { idUSer } = request.params
+    let users = await usersService.getUserOr404(idUSer)
     return response.json({ results: users })
 
   } catch (error) {
@@ -81,7 +82,7 @@ const getInfoUser = async (request, response, next) => {
 const getEmail = async (request, response, next) => {
   try {
     let { email } = request.body
-    let users = await usersService.getUserByEmail(email)
+    let users = await usersService.getUserByEmailOr404(email)
     return response.json({ results: users })
   } catch (error) {
     next(error)
@@ -90,12 +91,14 @@ const getEmail = async (request, response, next) => {
 
 const updateUser = async (request, response, next) => {
   try {
-    let { id } = request.params
+    let { idUSer } = request.params
     let profile_id = request.user.profileId
-    if (id == request.user.id) {
+    if (idUSer == request.user.id) {
       let { username, first_name, last_name, image_url, code_phone, phone } = request.body
-      let user = await usersService.updateUser(id, { profile_id, username, first_name, last_name, image_url, code_phone, phone })
+      let user = await usersService.updateUser(idUSer, { profile_id, username, first_name, last_name, image_url, code_phone, phone })
       return response.status(200).json({ result: user })
+    } else {
+      throw new CustomError('User not authorized,check the userID params', 401, 'Unauthorized')
     }
   } catch (error) {
     next(error)
@@ -105,8 +108,8 @@ const updateUser = async (request, response, next) => {
 
 const removeUser = async (request, response, next) => {
   try {
-    let { id } = request.params
-    let user = await usersService.removeUser(id)
+    let { idUSer } = request.params
+    let user = await usersService.removeUser(idUSer)
     return response.json({ results: user, message: 'removed' })
   } catch (error) {
     next(error)

@@ -13,15 +13,16 @@ The .env.example file shows the necessary keys
 Use a connection url 
 - dialect-Sequelize://Username_DB:Password_DB@Host_DB:Port_DB/name_DB
 ### JWT 
-A secret word is required to encode the token
+- A secret word is required to encode the token
 ### SERVER 
-Need to add the domain for swagger use, it should be the full url
+-Need to add the domain for swagger use, it should be the full url
 
-## run the migrations
+## Run the migrations
 - npx sequelize-cli db:migrate
 
-## run the seeds
+## Run the seeds
 - npx sequelize-cli db:seed:all
 
 roles, states, cities, countries, types of publications, tags are added
+
 

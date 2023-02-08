@@ -30,71 +30,71 @@ class RolesService {
     return roles
   }
 
-  async createRole({ name }) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let newRole = await models.Roles.create({
-        name: name,
-      }, { transaction })
+  // async createRole({ name }) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let newRole = await models.Roles.create({
+  //       name: name,
+  //     }, { transaction })
 
-      await transaction.commit()
-      return newRole
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     await transaction.commit()
+  //     return newRole
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
   //Return Instance if we do not converted to json (or raw:true)
-  async getRoleOr404(id) {
-    let role = await models.Roles.findByPk(id)
+  // async getRoleOr404(id) {
+  //   let role = await models.Roles.findByPk(id)
 
-    if (!role) throw new CustomError('Not found Role', 404, 'Not Found')
+  //   if (!role) throw new CustomError('Not found Role', 404, 'Not Found')
 
-    return role
-  }
+  //   return role
+  // }
 
   //Return not an Instance raw:true | we also can converted to Json instead
-  async getRole(id) {
-    role
-    let role = await models.Roles.findByPk(id, { raw: true })
-    return role
-  }
+  // async getRole(id) {
+  //   role
+  //   let role = await models.Roles.findByPk(id, { raw: true })
+  //   return role
+  // }
 
-  async updateRole(id, obj) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let role = await models.Roles.findByPk(id)
+  // async updateRole(id, obj) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let role = await models.Roles.findByPk(id)
 
-      if (!role) throw new CustomError('Not found role', 404, 'Not Found')
+  //     if (!role) throw new CustomError('Not found role', 404, 'Not Found')
 
-      let updatedRole = await role.update(obj, {
-        where: {
-          id: id
-        }
-      }, { transaction })
+  //     let updatedRole = await role.update(obj, {
+  //       where: {
+  //         id: id
+  //       }
+  //     }, { transaction })
 
-      await transaction.commit()
+  //     await transaction.commit()
 
-      return updatedRole
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     return updatedRole
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
-  async removeRole(id) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let role = await models.Roles.findByPk(id)
-      if (!role) throw new CustomError('Not found role', 404, 'Not Found')
-      await role.destroy({ transaction })
-      await transaction.commit()
-      return role
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  // async removeRole(id) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let role = await models.Roles.findByPk(id)
+  //     if (!role) throw new CustomError('Not found role', 404, 'Not Found')
+  //     await role.destroy({ transaction })
+  //     await transaction.commit()
+  //     return role
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
 }
 

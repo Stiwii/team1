@@ -1,19 +1,22 @@
 const express = require('express')
 const router = express.Router()
 const passportJWT = require('../libs/passport')
+const checkValues= require('../middlewares/checkRequest.middleware')
+const checkQueryParameters= require('../middlewares/checkQuery.middleware')
+const checkParam = require('../middlewares/checkParams.middleware')
 
 const { getPublications, getPublication, addPublication, removePublication } = require('../controllers/publications.controller')
 const { addVote } = require('../controllers/votes.controller')
 
 router.route('/')
-  .get(getPublications)//2
-  .post(passportJWT.authenticate('jwt', { session: false }),addPublication)//1
+  .get(checkQueryParameters,getPublications)
+  .post(passportJWT.authenticate('jwt', { session: false }),checkValues,checkParam,addPublication)
 
-router.route('/:id')
-  .get(getPublication)//2
-  .delete(passportJWT.authenticate('jwt', { session: false }),removePublication)//1
+router.route('/:idPublication')
+  .get(checkParam,getPublication)
+  .delete(passportJWT.authenticate('jwt', { session: false }),checkParam,removePublication)
 
-router.route('/:id/votes')
-  .get(passportJWT.authenticate('jwt', { session: false }),addVote)//2
+router.route('/:idPublication/vote')
+  .get(passportJWT.authenticate('jwt', { session: false }),checkParam,addVote)
 
 module.exports = router

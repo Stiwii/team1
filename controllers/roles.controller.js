@@ -6,7 +6,7 @@ const rolesService = new RolesService()
 const getRoles = async (request, response, next) => {
   try {
     let query = request.query
-    let { page, size } = query // QUERY STRING (page,size) EXAMPLE: http://localhost:9010/api/v1/roles?page=1&size=5
+    let { page, size } = query 
     const { limit, offset } = getPagination(page, size, '10')
     query.limit = limit
     query.offset = offset
@@ -19,25 +19,25 @@ const getRoles = async (request, response, next) => {
   }
 }
 
-const addRole = async (request, response, next) => {
-  try {
-    let { body } = request
-    let role = await rolesService.createRole(body)
-    return response.status(201).json({ results: role })
-  } catch (error) {
-    next(error)
-  }
-}
+// const addRole = async (request, response, next) => {
+//   try {
+//     let { body } = request
+//     let role = await rolesService.createRole(body)
+//     return response.status(201).json({ results: role })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
-const getRole = async (request, response, next) => {
-  try {
-    let { id } = request.params
-    let roles = await rolesService.getRoleOr404(id)
-    return response.json({ results: roles })
-  } catch (error) {
-    next(error)
-  }
-}
+// const getRole = async (request, response, next) => {
+//   try {
+//     let { id } = request.params
+//     let roles = await rolesService.getRoleOr404(id)
+//     return response.json({ results: roles })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 // const updateRole = async (request, response, next) => {
 //   try {
@@ -62,6 +62,6 @@ const getRole = async (request, response, next) => {
 
 module.exports = {
   getRoles,
-  addRole,
-  getRole
+  // addRole,
+  // getRole
 }

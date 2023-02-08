@@ -42,19 +42,19 @@ const logIn = async (request, response, next) => {
   }
 }
 
-const verifyUser = async (request, response, next) => {
-  const id = request.params.id
-  try {
-    const user = await authService.getInfo(id)
-    if (user) {
-      response.status(200).json({ message: 'Verify user succesfully!' })
-    } else {
-      response.status(400).json({ message: 'Already verified user' })
-    }
-  } catch (error) {
-    next(error)
-  }
-}
+// const verifyUser = async (request, response, next) => {
+//   const id = request.params.id
+//   try {
+//     const user = await authService.getInfo(id)
+//     if (user) {
+//       response.status(200).json({ message: 'Verify user succesfully!' })
+//     } else {
+//       response.status(400).json({ message: 'Already verified user' })
+//     }
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 const forgetPassword = async (request, response, next) => {
   const { email } = request.body
@@ -83,14 +83,16 @@ const forgetPassword = async (request, response, next) => {
 }
 
 const restorePassword = async (request, response, next) => {
-
-  const data = JSON.parse(atob((request.params.token).split('.')[1]))
   const { password } = request.body
   try {
-    if (password == '') throw new CustomError('Not empty Password', 400, 'Not authorized')
+    let data
+    try {
+      data = JSON.parse(atob((request.params.token).split('.')[1]))
+    } catch (error) {
+      throw new CustomError(`${error.name} : ${error.message}`, 401, 'Unauthorized')
+    }
     await authService.changePassword(data, password, (request.params.token))
     response.status(200).json({ message: 'update success' })
-
   } catch (error) {
     next(error)
   }
@@ -99,7 +101,7 @@ const restorePassword = async (request, response, next) => {
 
 module.exports = {
   logIn,
-  verifyUser,
+  // verifyUser,
   forgetPassword,
   restorePassword
 }

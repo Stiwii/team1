@@ -1,7 +1,9 @@
 const models = require('../database/models')
 const { Op } = require('sequelize')
 const CustomError = require('../utils/custom-error')
+const PublicationsService = require('../services/publications.service')
 
+const publicationsService = new PublicationsService()
 class VotesService {
 
   constructor() {
@@ -36,7 +38,6 @@ class VotesService {
       }],
     }
 
-
     const { limit, offset } = query
     if (limit && offset) {
       options.limit = limit
@@ -50,35 +51,31 @@ class VotesService {
     return votes
   }
 
-  async createVote({ publication_id, profile_id }) {
+  async createVote({ idPublication, profileId }) {
     const transaction = await models.sequelize.transaction()
 
     try {
-
+      await publicationsService.getPublicationOr404(idPublication)
       let validate = await models.Votes.scope('public_view').findOne({
         where: {
-          publication_id: publication_id,
-          profile_id: profile_id
+          publication_id: idPublication,
+          profile_id: profileId
         }
       }, { transaction })
-
       if (validate) {
         let value = await models.Votes.destroy({
           where: {
-            publication_id: publication_id,
-            profile_id: profile_id
+            publication_id: idPublication,
+            profile_id: profileId
           }
         }, { transaction })
         await transaction.commit()
         return value
       }
-
-
       let data = await models.Votes.create({
-        profile_id: profile_id,
-        publication_id: publication_id
+        profile_id: profileId,
+        publication_id: idPublication
       }, { transaction })
-
       await transaction.commit()
       return {
         publication_id: data.publication_id,

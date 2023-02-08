@@ -15,7 +15,7 @@ const options = {
 
 passport.use(
   new JwtStrategy(options, (tokenDecoded, done) => {
-    usersService.getUser(tokenDecoded.id)
+    usersService.getUserOr404(tokenDecoded.id)
       .then((user) => {
         if (user) {
           done(null, tokenDecoded) //? Caso Exitoso, porque el usuario si existe

@@ -11,9 +11,7 @@ class PublicationsService {
 
   async findAndCount(query) {
     const { limit, offset, tags } = query
-
-
-    // let tagsIDs = tags.split(',')
+  
     const options = {
       include: [{
         model: models.Cities.scope('get_city'),
@@ -38,7 +36,6 @@ class PublicationsService {
       }
       ]
     }
-
 
     if (limit && offset) {
       options.limit = limit
@@ -83,14 +80,14 @@ class PublicationsService {
     return votes
   }
 
-  async createPublication({ profile_id, publication_type_id, title, description, urlShare, tags }) {
+  async createPublication({ profile_id, idPublicationType, title, description, urlShare, tags }) {
     const transaction = await models.sequelize.transaction()
 
     try {
       let newPublication = await models.Publications.create({
         id: uuid.v4(),
         profile_id: profile_id,
-        publication_type_id: publication_type_id,
+        publication_type_id: idPublicationType,
         title: title,
         description: description,
         content: urlShare,
@@ -108,20 +105,20 @@ class PublicationsService {
     }
   }
   //Return Instance if we do not converted to json (or raw:true)
-  async getPublicationOr404(id) {
-    let publication = await models.Publications.findByPk(id)
+  // async getPublicationOr404(id) {
+  //   let publication = await models.Publications.findByPk(id)
 
-    // if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
+  //   if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
-    return publication
-  }
+  //   return publication
+  // }
 
   //Return not an Instance raw:true | we also can converted to Json instead
-  async getPublication(id) {
+  async getPublicationOr404(idPublication) {
     // let publication = await models.Publications.findByPk(id, { raw: true })
     let publication = await models.Publications.scope('get_publication').findOne({
       where: {
-        id: id
+        id: idPublication
       }
       ,
       include: [{
@@ -146,15 +143,17 @@ class PublicationsService {
         }
       }]
     })
+    if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
     return publication
   }
 
-  async findPublicationByUser(profileId) {
+  async findPublicationByProfileOr404(profileId) {
     let publication = await models.Publications.findAndCountAll({
       where: {
         profile_id: profileId
       }
     })
+    if (!publication) throw new CustomError('Publication with the user profile was not found', 404, 'Not Found')
     return publication
   }
 
@@ -182,10 +181,10 @@ class PublicationsService {
     }
   }
 
-  async removePublication(id, profileId) {
+  async removePublication(idPublication, profileId) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(id)
+      let publication = await models.Publications.findByPk(idPublication)
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 

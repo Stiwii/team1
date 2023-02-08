@@ -31,21 +31,21 @@ class CountriesService {
     return countries
   }
 
-  async createCountry(obj) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let newCountry = await models.Countries.create({
-        id: uuid.v4(),
-        name: obj.name
-      }, { transaction })
+  // async createCountry(obj) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let newCountry = await models.Countries.create({
+  //       id: uuid.v4(),
+  //       name: obj.name
+  //     }, { transaction })
 
-      await transaction.commit()
-      return newCountry
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     await transaction.commit()
+  //     return newCountry
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
   //Return Instance if we do not converted to json (or raw:true)
   async getCountryOr404(id) {
     let country = await models.Countries.findByPk(id)
@@ -61,45 +61,45 @@ class CountriesService {
     return country
   }
 
-  async updateCountry(id, obj) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let country = await models.Countries.findByPk(id)
+  // async updateCountry(id, obj) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let country = await models.Countries.findByPk(id)
 
-      if (!country) throw new CustomError('Not found Country', 404, 'Not Found')
+  //     if (!country) throw new CustomError('Not found Country', 404, 'Not Found')
 
-      let updatedCountry = await country.update(obj, {
-        where: {
-          id: id
-        }
-      }, { transaction })
+  //     let updatedCountry = await country.update(obj, {
+  //       where: {
+  //         id: id
+  //       }
+  //     }, { transaction })
 
-      await transaction.commit()
+  //     await transaction.commit()
 
-      return updatedCountry
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     return updatedCountry
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
-  async removeCountry(id) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let country = await models.Countries.findByPk(id)
+  // async removeCountry(id) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let country = await models.Countries.findByPk(id)
 
-      if (!country) throw new CustomError('Not found Country', 404, 'Not Found')
+  //     if (!country) throw new CustomError('Not found Country', 404, 'Not Found')
 
-      await country.destroy({ transaction })
+  //     await country.destroy({ transaction })
 
-      await transaction.commit()
+  //     await transaction.commit()
 
-      return country
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     return country
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
 }
 

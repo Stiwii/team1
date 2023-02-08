@@ -52,39 +52,31 @@ class UsersService {
     }
   }
 
-  async getMyUser(id) {
-    let user = await models.Users.scope('public_view').findOne({
-      where: {
-        id: id
-      }
-      // ,
-      // include: [{
-      //   model: models.Profiles.scope('public_view'),
-      //   as: 'profile'
-      // }]
-    })
-
-    // if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
-
-    return user
-  }
-
   //Return not an Instance raw:true | we also can converted to Json instead
-  async getUser(id) {
+  async getUserOr404(id) {
     let user = await models.Users.findByPk(id, { raw: true })
-    return user
-  }
-
-  async verifiedToken(id, token) {
-    let user = await models.Users.findOne({
-      where: {
-        id: id,
-        token: token
-      }
-    })
     if (!user) throw new CustomError('Not found user', 404, 'Not Found')
     return user
+  }
+
+  async verifiedTokenUser(id, token, exp) {
+    const transaction = await models.sequelize.transaction()
+    try {
+      let user = await models.Users.findOne({
+        where: {
+          id: id,
+          token: token
+        }
+      })
+      if (!user) throw new CustomError('The user associated with the token was not found', 400, 'Invalid Token')
+      if (Date.now() > exp * 1000) throw new CustomError('The token has expired, the 15min limit has been exceeded', 401, 'Unauthorized')
+      await user.update({ token: null }, { transaction })
+      await transaction.commit()
+      return user
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
   }
 
   async getInfo(id) {
@@ -122,7 +114,6 @@ class UsersService {
       let updatedProfile = await profile.update(obj, { transaction })
 
       await transaction.commit()
-
       return ({
         username: updatedUser.username,
         first_name: updatedUser.first_name,
@@ -142,12 +133,8 @@ class UsersService {
     try {
       let user = await models.Users.scope('public_view').findByPk(id)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
-
       let restoreUser = await user.update({ password: hashPassword(newPassword) }, { transaction })
-
       await transaction.commit()
-
       return restoreUser
     } catch (error) {
       await transaction.rollback()
@@ -204,7 +191,7 @@ class UsersService {
     }
   }
 
-  async getUserByEmail(email) {
+  async getUserByEmailOr404(email) {
     let user = await models.Users.scope('check_user').findOne({
       where: {
         email: email
@@ -218,13 +205,13 @@ class UsersService {
         }
       }]
     })
-    if (user === null) throw new CustomError('Not found user', 404, 'Not Found')
+    if (user === null) throw new CustomError('User email not found', 404, 'Not Found')
     return user
   }
-  async removeUser(id) {
+  async removeUser(idUSer) {
     const transaction = await models.sequelize.transaction()
     try {
-      let user = await models.Users.findByPk(id)
+      let user = await models.Users.findByPk(idUSer)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
       await user.destroy({ transaction })
       await transaction.commit()
@@ -235,6 +222,21 @@ class UsersService {
       throw error
     }
   }
+
+  async removeTokenUser(id) {
+    const transaction = await models.sequelize.transaction()
+    try {
+      let user = await models.Users.scope('public_view').findByPk(id)
+      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+
+      await user.update({ token: null }, { transaction })
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
+  }
+
 }
 
 

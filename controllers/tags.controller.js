@@ -42,9 +42,9 @@ const getTag = async (request, response, next) => {
 
 const updateTag = async (request, response, next) => {
   try {
-    let { id } = request.params
+    let { idTag } = request.params
     let { body } = request
-    let tag = await tagsService.updateTag(id, body)
+    let tag = await tagsService.updateTag(idTag, body)
     return response.json({ results: tag })
   } catch (error) {
     next(error)
@@ -53,8 +53,8 @@ const updateTag = async (request, response, next) => {
 
 const removeTag = async (request, response, next) => {
   try {
-    let { id } = request.params
-    let tag = await tagsService.removeTag(id)
+    let { idTag } = request.params
+    let tag = await tagsService.removeTag(idTag)
     return response.json({ results: tag, message: 'removed' })
   } catch (error) {
     next(error)

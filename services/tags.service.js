@@ -35,7 +35,6 @@ class TagsService {
   async createTag(name) {
     const transaction = await models.sequelize.transaction()
     try {
-      if(!name)  throw new CustomError('The request parameters do not match the request schema', 404, 'Invalid Parameters')
       let newTag = await models.Tags.create({
         name: name
       }, { transaction })
@@ -74,16 +73,16 @@ class TagsService {
     return tag
   }
 
-  async updateTag(id, obj) {
+  async updateTag(idTag, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let tag = await models.Tags.findByPk(id)
+      let tag = await models.Tags.findByPk(idTag)
 
       if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 
       let updatedTag = await tag.update(obj, {
         where: {
-          id: id
+          id: idTag
         }
       }, { transaction })
 
@@ -96,10 +95,10 @@ class TagsService {
     }
   }
 
-  async removeTag(id) {
+  async removeTag(idTag) {
     const transaction = await models.sequelize.transaction()
     try {
-      let tag = await models.Tags.findByPk(id)
+      let tag = await models.Tags.findByPk(idTag)
 
       if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 

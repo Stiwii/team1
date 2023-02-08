@@ -7,7 +7,7 @@ const options = {
     openapi: '3.0.0',
     info: {
       title: 'Pa cuando API',
-      description: 'Servidor de una facilitador de eventos',
+      description: '',
       version: '1.0.0'
     },
     servers: [{ url: process.env.DOMAIN }],
@@ -54,6 +54,7 @@ const options = {
         // }
         bearerAuth: {
           type: 'http',
+          description: '<strong>Add JWT Token</strong>',
           scheme: 'bearer',
           bearerFormat: 'JWT'
         }
@@ -97,7 +98,7 @@ const options = {
             //   required:true,
             //   example: 'newUrl'
             //},
-            publication_type_id: {
+            idPublicationType: {
               type: 'string',
               format: 'integer',
               required:true,
@@ -181,7 +182,7 @@ const options = {
         Error: {
           type: 'object',
           properties: {
-            statusCode: { type: 'error', format: 'integer', example: '4XX' },
+            statusCode: { type: 'error', format: 'integer', example: 'NNN' },
             erroName: { type: 'string', example: 'SequelizeUniqueConstraintError' },
             message: { type: 'string', example: 'llave duplicada viola restricción de unicidad «users_email_key»' }
           }
@@ -439,64 +440,6 @@ const options = {
                 }
               }
             },
-            401: {
-              description: 'Invalid Credentials!',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      errorName: {
-                        type: 'string', example: 'Invalid Credentials!'
-                      },
-                      message: {
-                        type: 'array', example: 'The email or password are incorrect'
-
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            400: {
-              description: 'Bad Request',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      errorName: {
-                        type: 'string', example: 'Bad Request'
-                      },
-                      message: {
-                        type: 'array', example: 'Error Message'
-
-                      }
-                    }
-                  }
-                }
-              }
-
-            },
-            500: {
-              description: 'Internal Server Error',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    properties: {
-                      errorName: {
-                        type: 'string', example: 'Internal Server Error'
-                      },
-                      message: {
-                        type: 'array', example: 'Error Message'
-
-                      }
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       },
@@ -641,8 +584,8 @@ const options = {
             'User'
           ],
           summary: 'Get my data',
-          description: 'Get my information',
-          operationId: 'in',
+          description: '<strong>Get</strong> my information through the <strong>token</strong>',
+          operationId: 'userInfo',
           responses: {
             '200': {
               description: 'successful operation',
@@ -727,19 +670,25 @@ const options = {
             'Publications_types'
           ],
           summary: 'Get all Publications types',
-          description: 'search all available publications types',
+          description: 'Search all available publications types',
           operationId: 'getPublicationsTypes',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -813,8 +762,8 @@ const options = {
           tags: [
             'Publications_types'
           ],
-          summary: 'Get all Publications',
-          description: 'search all available publications',
+          summary: 'Get Publication',
+          description: 'Search for a publication by id',
           operationId: 'getPublicationType',
           parameters: [
             {
@@ -879,25 +828,34 @@ const options = {
             'Publications'
           ],
           summary: 'Get all Publications',
-          description: 'search all available publications',
+          description: 'Search all available publications | filtering by tags (categories), searches for all publications that contain at least one category sent in the query',
           operationId: ' GetAllPublications ',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             },
             {
               name: 'tags',
               in: 'query',
-              description: 'Tags ID to filter | All the tags that you want to filter must be inside a string separated by commas',
+              description: 'Tags ID to filter | <strong>Verify that the Tag ID exists</strong> | All the tags that you want to filter must be inside a string separated by commas | ',
+              schema:{
+                type: 'String'
+              },
               example: '1,2,3'
             }
           ],
@@ -1042,7 +1000,7 @@ const options = {
             'Publications'
           ],
           summary: 'Add a publication',
-          description: 'Add a new publication,by default it adds the city , also the imageURL (in development)',
+          description: 'Add a new publication,by default it adds the city , also the imageURL (in development) | the token is needed to get the profileId | <strong>VERIFY THAT TAGS EXIST</strong>',
           operationId: ' createPublications ',
           requestBody: {
             description: 'After registering, a verification email will be sent to your email',
@@ -1094,7 +1052,7 @@ const options = {
             'Publications'
           ],
           summary: 'Get a Publication',
-          description: 'Search for information about a publication',
+          description: 'Get a publication from any user by means of the publicationId',
           operationId: 'getPublication',
           parameters: [
             {
@@ -1248,7 +1206,7 @@ const options = {
             'Publications'
           ],
           summary: 'Delete my publication',
-          description: 'Delete avalible publication',
+          description: 'Delete a publication created by the <strong>user</strong>(profileId) associated with the <strong>token</strong>',
           operationId: 'removePublication',
           parameters: [
             {
@@ -1335,13 +1293,13 @@ const options = {
             }]
         }
       },
-      '/api/v1/publications/{publicationId}/votes': {
+      '/api/v1/publications/{publicationId}/vote': {
         get: {
           tags: [
             'Publications'
           ],
           summary: 'Vote for a publication',
-          description: 'Vote for an available publication',
+          description: 'Extracts the profileID from the token and associates it to a publicationId, if the association does not exist, said association is created, if it already exists then it is deleted',
           operationId: 'votePublication',
           parameters: [
             {
@@ -1424,8 +1382,8 @@ const options = {
           tags: [
             'User'
           ],
-          summary: 'get user data',
-          description: 'find user information',
+          summary: 'Get my user data',
+          description: 'Get my information, the <strong>userId</strong> will be validated with the <strong>token</strong>',
           operationId: 'getAUser',
           parameters: [
             {
@@ -1494,7 +1452,7 @@ const options = {
             'User'
           ],
           summary: 'Update my user',
-          description: 'update my user information',
+          description: 'Update my user information | The <strong>userId</strong> will be validated with the <strong>token</strong>',
           operationId: 'putUser',
           parameters: [
             {
@@ -1598,7 +1556,7 @@ const options = {
             'User'
           ],
           summary: 'Get my votes',
-          description: 'Get the votes of the publications',
+          description: 'Get the votes of the publications | The <strong>userId</strong> will be validated with the <strong>token</strong>',
           operationId: 'getMyVotes',
           parameters: [
             {
@@ -1615,12 +1573,18 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -1804,7 +1768,7 @@ const options = {
             'User'
           ],
           summary: 'Get my publications',
-          description: 'Get my publications',
+          description: 'Get my publications |the <strong>userId</strong> will be validated with the <strong>token</strong>',
           operationId: 'getMyPublictions',
           parameters: [
             {
@@ -1821,12 +1785,18 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -1911,20 +1881,26 @@ const options = {
           tags: [
             'User'
           ],
-          summary: 'Get users',
-          description: 'admin endpoint',
+          summary: 'Get All Users',
+          description: 'Get all users | <strong>Admin endpoint</strong>',
           operationId: 'getAllUsers',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -2002,20 +1978,26 @@ const options = {
           tags: [
             'States'
           ],
-          summary: 'get all states',
-          description: 'search all users of the social network',
+          summary: 'Get all states',
+          description: 'Search all States',
           operationId: 'getAllStates',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -2090,20 +2072,26 @@ const options = {
           tags: [
             'Cities'
           ],
-          summary: 'get all cities',
-          description: 'search all users of the social network',
+          summary: 'Get all cities',
+          description: 'Search all cities',
           operationId: 'getAllCities',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -2178,20 +2166,26 @@ const options = {
           tags: [
             'Roles'
           ],
-          summary: 'get all roles',
-          description: 'search all users of the social network',
+          summary: 'Get all roles',
+          description: 'Search all Roles',
           operationId: 'getAllRoles',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -2263,19 +2257,25 @@ const options = {
             'Tags'
           ],
           summary: 'Get all Tags types',
-          description: 'search all available Tags',
+          description: 'Search all available Tags',
           operationId: 'getTags',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
+              schema:{
+                type: 'integer'
+              },
               example: '10'
             },
             {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              schema:{
+                type: 'integer'
+              },
               example: '1'
             }
           ],
@@ -2344,8 +2344,8 @@ const options = {
           tags: [
             'Tags'
           ],
-          summary: 'Add Tag',
-          description: 'Add new Tag',
+          summary: `Add Tag`,
+          description: `Add new Tag | <strong>Only ADMIN</strong>`,
           operationId: ' createTag ',
           requestBody: {
             description: 'tags post is for Admin',
@@ -2417,7 +2417,7 @@ const options = {
             'Tags'
           ],
           summary: 'Update my tag',
-          description: 'update my tag information',
+          description:`Update tag information | <strong>Only ADMIN</strong>`,
           operationId: 'putTag',
           parameters: [
             {
@@ -2498,7 +2498,7 @@ const options = {
             'Tags'
           ],
           summary: 'Delete Tag',
-          description: 'Delete avalible Tag',
+          description: `Delete avalible Tag | <strong>Only ADMIN</strong>`,
           operationId: 'removeTag',
           parameters: [
             {
@@ -2567,7 +2567,6 @@ const options = {
   },
   apis: ['src/users/users.router.js', 'src/follows/follows.router.js', 'src/posts/posts.router.js', 'src/auth/auth.router.js']
 }
-
 
 const swaggerSpec = swaggerJSDoc(options)
 

@@ -11,15 +11,15 @@ const getVotes = async (request, response, next) => {
     const { limit, offset } = getPagination(page, size, '10')
     query.limit = limit
     query.offset = offset
-    const { id } = request.params
+    const { idUSer } = request.params
     const profileId = request.user.profileId
     const userId = request.user.id
-    if (id == userId) {
+    if (idUSer == userId) {
       let votes = await votesService.findAndCount(query, profileId)
       const results = getPagingData(votes, page, limit)
       return response.json({ results: results })
     } else{
-      throw new CustomError('User not authorized', 401, 'Unauthorized')
+      throw new CustomError('User not authorized,check the userID params', 401, 'Unauthorized')
     }
   } catch (error) {
     next(error)
@@ -28,11 +28,10 @@ const getVotes = async (request, response, next) => {
 
 const addVote = async (request, response, next) => {
   try {
-    let profile_id = request.user.profileId
-    let publication_id = request.params.id
+    let {profileId} = request.user
+    let {idPublication} = request.params
 
-    let vote = await votesService.createVote({ publication_id, profile_id })
-    console.log(vote)
+    let vote = await votesService.createVote({ idPublication, profileId })
     if (vote == 1) {
       return response.status(200).json({
         results: 'Vote removed'
@@ -52,15 +51,15 @@ const addVote = async (request, response, next) => {
   }
 }
 
-const getVote = async (request, response, next) => {
-  try {
-    let profileId = request.user.profileId
-    let votes = await votesService.findAndCount(profileId)
-    return response.json({ results: votes })
-  } catch (error) {
-    next(error)
-  }
-}
+// const getVote = async (request, response, next) => {
+//   try {
+//     let profileId = request.user.profileId
+//     let votes = await votesService.findAndCount(profileId)
+//     return response.json({ results: votes })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 // const updateVote = async (request, response, next) => {
 //   try {
@@ -86,6 +85,6 @@ const removeVote = async (request, response, next) => {
 module.exports = {
   getVotes,
   addVote,
-  getVote,
+  // getVote,
   removeVote
 }

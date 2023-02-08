@@ -7,15 +7,27 @@ function logErrors(err, req, res, next) {
 }
 function errorHandler(err, req, res, next) {
   let { status } = err
-  if(!status){
-    status=500
+  if (!status) {
+    status = 500
   }
   return res.status(status).json({
     statusCode: status,
     message: err.message,
-    errorName: err.name,
+    errorName: err.name
     // stack: err.stack, //! es hubicacion del error segun recuerda ian
   })
+}
+function errorJWT(err, req, res, next) {
+
+  if (err.name === 'InvalidCharacterError') {
+    return res.status(401).json({
+      statusCode: 401,
+      message: err.message,
+      errorName: err.name
+
+    })
+  }
+  next(err)
 }
 function handlerAuthError(err, req, res, next) {
   if (err.status === 401 || err.status === 403) {
@@ -26,7 +38,7 @@ function handlerAuthError(err, req, res, next) {
       // errors: err.errors,
       // stack: err.stack,
       // code: err.code,
-    });
+    })
   }
   //   if (err.name === "CustomName")
   if (err.name === 'UnauthorizedError') {
@@ -37,7 +49,7 @@ function handlerAuthError(err, req, res, next) {
       // errors: err.errors,
       // stack: err.stack,
       // code: err.code,
-    });
+    })
   }
   // if (err.name === "Error Testing") {
   //   return res.status(401).json({
@@ -46,9 +58,9 @@ function handlerAuthError(err, req, res, next) {
   //     errors: err.errors,
   //     // stack: err.stack,
   //     code: err.code,
-  //   });
+  //   })
   // }
-  next(err);
+  next(err)
 }
 function ormErrorHandler(err, req, res, next) {
   if (
@@ -62,7 +74,7 @@ function ormErrorHandler(err, req, res, next) {
       statusCode: 409,
       errorName: err.name,
       message: err.message
-    });
+    })
   }
   if (err instanceof ValidationError) {
     return res.status(409).json({
@@ -70,7 +82,7 @@ function ormErrorHandler(err, req, res, next) {
       errorName: err.name,
       message: err.message,
       // errors: err.errors
-    });
+    })
   }
   if (err instanceof DatabaseError) {
     return res.status(409).json({
@@ -82,7 +94,7 @@ function ormErrorHandler(err, req, res, next) {
       // errors: err.errors,
       // sql: err['sql'],
       // stack: err.stack,
-    });
+    })
   }
   if (err instanceof BaseError) {
     return res.status(409).json({
@@ -94,8 +106,8 @@ function ormErrorHandler(err, req, res, next) {
       // errors: err.errors,
       // sql: err['sql'],
       // stack: err.stack,
-    });
+    })
   }
-  next(err);
+  next(err)
 }
-module.exports = { logErrors, handlerAuthError, errorHandler, ormErrorHandler }
+module.exports = { logErrors, handlerAuthError, errorHandler, ormErrorHandler, errorJWT }

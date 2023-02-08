@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { getProfiles } = require('../controllers/profiles.controller')
+// const { getProfiles } = require('../controllers/profiles.controller')
 
 // router.post('/login', authServices.postLogin)
 // router.post('/:id', profilesServices.addProfile)

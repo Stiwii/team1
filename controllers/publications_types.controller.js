@@ -20,51 +20,51 @@ const getPublicationsTypes = async (request, response, next) => {
   }
 }
 
-const addPublicationType = async (request, response, next) => {
-  try {
-    let { body } = request
-    let publicationType = await publicationsTypesService.createPublicationType(body)
-    return response.status(201).json({ results: publicationType })
-  } catch (error) {
-    next(error)
-  }
-}
+// const addPublicationType = async (request, response, next) => {
+//   try {
+//     let { body } = request
+//     let publicationType = await publicationsTypesService.createPublicationType(body)
+//     return response.status(201).json({ results: publicationType })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 const getPublicationType = async (request, response, next) => {
   try {
-    let { id } = request.params
-    let publicationsTypes = await publicationsTypesService.getPublicationType(id)
+    let { idPublicationType } = request.params
+    let publicationsTypes = await publicationsTypesService.getPublicationTypeOr404(idPublicationType)
     return response.json({ results: publicationsTypes })
   } catch (error) {
     next(error)
   }
 }
 
-const updatePublicationType = async (request, response, next) => {
-  try {
-    let { id } = request.params
-    let { name } = request.body
-    let publicationType = await publicationsTypesService.updatePublicationType(id, { name })
-    return response.json({ results: publicationType })
-  } catch (error) {
-    next(error)
-  }
-}
+// const updatePublicationType = async (request, response, next) => {
+//   try {
+//     let { id } = request.params
+//     let { name } = request.body
+//     let publicationType = await publicationsTypesService.updatePublicationType(id, { name })
+//     return response.json({ results: publicationType })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
-const removePublicationType = async (request, response, next) => {
-  try {
-    let { id } = request.params
-    let publicationType = await publicationsTypesService.removePublicationType(id)
-    return response.json({ results: publicationType, message: 'removed' })
-  } catch (error) {
-    next(error)
-  }
-}
+// const removePublicationType = async (request, response, next) => {
+//   try {
+//     let { id } = request.params
+//     let publicationType = await publicationsTypesService.removePublicationType(id)
+//     return response.json({ results: publicationType, message: 'removed' })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 module.exports = {
   getPublicationsTypes,
-  addPublicationType,
+  // addPublicationType,s
   getPublicationType,
-  updatePublicationType,
-  removePublicationType
+  // updatePublicationType,
+  // removePublicationType
 }

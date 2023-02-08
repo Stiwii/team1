@@ -53,7 +53,7 @@ class ProfilesService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getProfileOr404(id) {
-    let profile = await models.Profiles.findByPk(id)
+    let profile = await models.Profiles.findByPk(id,{raw:true})
 
     if (!profile) throw new CustomError('Not found Profile', 404, 'Not Found')
 
@@ -66,45 +66,45 @@ class ProfilesService {
     return profile
   }
 
-  async updateProfile(id, obj) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let profile = await models.Profiles.findByPk(id)
+  // async updateProfile(id, obj) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let profile = await models.Profiles.findByPk(id)
 
-      if (!profile) throw new CustomError('Not found profile', 404, 'Not Found')
+  //     if (!profile) throw new CustomError('Not found profile', 404, 'Not Found')
 
-      let updatedProfile = await profile.update(obj, {
-        where: {
-          id: id
-        }
-      }, { transaction })
+  //     let updatedProfile = await profile.update(obj, {
+  //       where: {
+  //         id: id
+  //       }
+  //     }, { transaction })
 
-      await transaction.commit()
+  //     await transaction.commit()
 
-      return updatedProfile
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     return updatedProfile
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
-  async removeProfile(id) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      let profile = await models.Profiles.findByPk(id)
+  // async removeProfile(id) {
+  //   const transaction = await models.sequelize.transaction()
+  //   try {
+  //     let profile = await models.Profiles.findByPk(id)
 
-      if (!profile) throw new CustomError('Not found profile', 404, 'Not Found')
+  //     if (!profile) throw new CustomError('Not found profile', 404, 'Not Found')
 
-      await profile.destroy({ transaction })
+  //     await profile.destroy({ transaction })
 
-      await transaction.commit()
+  //     await transaction.commit()
 
-      return profile
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
+  //     return profile
+  //   } catch (error) {
+  //     await transaction.rollback()
+  //     throw error
+  //   }
+  // }
 
 }
 
