@@ -9,7 +9,7 @@ const checkRequest= require('../middlewares/joiRequest.middleware')
 const { addPublicationSchema,querySchema } = require('../utils/validationSchemes')
  
 router.route('/')
-  .get(checkRequest('query',querySchema),getPublications)
+  .get(getPublications)
   .post(passportJWT.authenticate('jwt', { session: false }),checkRequest('body',addPublicationSchema),addPublication)
 
 router.route('/:idPublication')

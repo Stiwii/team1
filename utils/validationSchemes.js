@@ -31,7 +31,10 @@ const addPublicationSchema = Joi.object({
 const querySchema = Joi.object({
   size : Joi.number(),
   page : Joi.number(),
-  tags : Joi.string()
+  tags : Joi.string(),
+  title: Joi.string(),
+  description: Joi.string(),
+  publications_types: Joi.string()
 })
 
 const updateTagSchema = Joi.object({

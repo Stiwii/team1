@@ -1,19 +1,22 @@
 const models = require('../database/models')
 const uuid = require('uuid')
 const { Op, cast, literal } = require('sequelize')
-const  CustomError  = require('../utils/custom-error')
+const CustomError = require('../utils/custom-error')
 
 class PublicationsService {
-  
+
   constructor() {
   }
   async findAndCount(query) {
     const { limit, offset, tags } = query
-  
+
     const options = {
-      attributes:{include:[
-        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
-      ]},
+      where:{},
+      attributes: {
+        include: [
+          [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+        ]
+      },
       include: [{
         model: models.Cities.scope('get_city'),
         as: 'city',
@@ -54,6 +57,24 @@ class PublicationsService {
       })
     }
 
+    const { publications_types } = query
+    
+    if (publications_types) {
+      let publicationsIDs = publications_types.split(',')
+      options.where.publication_type_id = { [Op.or]: publicationsIDs }
+    }
+
+    const { title } = query
+    console.log(title)
+    if (title) {
+      options.where.title = { [Op.iLike]: `%${title}%` }
+    }
+
+    const { description } = query
+    if (description) {
+      options.where.description = { [Op.iLike]: `%${description}%` }
+    }
+
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
@@ -65,9 +86,10 @@ class PublicationsService {
     const options = {
       where: { profile_id: profileId },
       attributes: {
-        include:[
-        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
-      ]},
+        include: [
+          [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+        ]
+      },
     }
 
     const { limit, offset } = query
@@ -122,9 +144,11 @@ class PublicationsService {
       where: {
         id: idPublication
       },
-      attributes:{include:[
-        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
-      ]}
+      attributes: {
+        include: [
+          [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+        ]
+      }
       ,
       include: [{
         model: models.Cities.scope('get_city'),
@@ -167,7 +191,7 @@ class PublicationsService {
   async updatePublication(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(id,{ raw: true })
+      let publication = await models.Publications.findByPk(id, { raw: true })
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
@@ -189,7 +213,7 @@ class PublicationsService {
   async removePublication(idPublication, profileId) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(idPublication,{ raw: true })
+      let publication = await models.Publications.findByPk(idPublication, { raw: true })
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
