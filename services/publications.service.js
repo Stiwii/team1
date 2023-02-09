@@ -121,7 +121,10 @@ class PublicationsService {
     let publication = await models.Publications.scope('get_publication').findOne({
       where: {
         id: idPublication
-      }
+      },
+      attributes:{include:[
+        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+      ]}
       ,
       include: [{
         model: models.Cities.scope('get_city'),

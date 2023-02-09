@@ -222,6 +222,9 @@ const options = {
             updated_at: {
               type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
             },
+            votes_count: {
+              type: 'integer', example: '1'
+            },
             City: {
               type: 'object',
               properties: {
@@ -532,7 +535,7 @@ const options = {
               required: true,
               schema: {
                 type: 'string',
-                example: 'eyOi......CI6IX'
+                example: 'eyOiwGnmajqusjEsUjn......cferi5IXy7'
               }
             }
           ],
@@ -873,7 +876,7 @@ const options = {
                         properties: {
                           count: {
                             type: 'integer',
-                            example: '5'
+                            example: '2'
                           },
                           totalPages: {
                             type: 'integer',
@@ -913,6 +916,9 @@ const options = {
                                 },
                                 updated_at: {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                votes_count: {
+                                  type: 'integer', example: '1'
                                 },
                                 City: {
                                   type: 'object',
@@ -1077,18 +1083,6 @@ const options = {
                       results: {
                         type: 'object',
                         properties: {
-                          count: {
-                            type: 'integer',
-                            example: '5'
-                          },
-                          totalPages: {
-                            type: 'integer',
-                            example: '1'
-                          },
-                          CurrentPage: {
-                            type: 'integer',
-                            example: '1'
-                          },
                           results: {
                             type: 'array',
                             items: {
