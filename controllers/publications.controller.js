@@ -11,13 +11,13 @@ const tagsService = new TagsService()
 const getPublications = async (request, response, next) => {
   try {
     let query = request.query
-    let { page, size, tags, publicationsTypes, description, title } = query
+    let { page, size, tags, publicationsTypesIds, description, title } = query
 
     const { limit, offset } = getPagination(page, size, '10')
     query.limit = limit
     query.offset = offset
     query.tags = tags
-    query.publicationsTypes = publicationsTypes
+    query.publicationsTypes = publicationsTypesIds
     query.title = title
     query.description = description
 

@@ -863,7 +863,7 @@ const options = {
               example: '1,2,3'
             },
             {
-              name: 'publicationsTypes',
+              name: 'publicationsTypesIds',
               in: 'query',
               description: 'Publication Types IDs to filter | <strong>Verify that the Publication Types ID exists</strong> | All Publication Types Ids that you want to filter must be inside a string separated by commas | ',
               schema: {
