@@ -61,7 +61,6 @@ class PublicationsTypesService {
     let publicationType = await models.Publications_types.findByPk(idPublicationType, { raw: true })
     return publicationType
   }
-
   // async updatePublicationType(id, obj) {
   //   const transaction = await models.sequelize.transaction()
   //   try {

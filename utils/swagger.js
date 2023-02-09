@@ -11,38 +11,39 @@ const options = {
       version: '1.0.0'
     },
     servers: [{ url: process.env.DOMAIN }],
-    tags: [{
-      name: 'User',
-      description: 'Operations about user'
-    },
-    {
-      name: 'Publications_types',
-      description: 'Operations about Publications'
-    },
-    {
-      name: 'Publications',
-      description: 'Operations about Publications'
-    },
-    {
-      name: 'States',
-      description: 'Operations about states'
-    },
-    {
-      name: 'Cities',
-      description: 'Operations about cities'
-    },
-    {
-      name: 'Roles',
-      description: 'Operations about roles'
-    },
-    {
-      name: 'Auth',
-      description: 'Operations about authorization'
-    },
-    {
-      name: 'Tags',
-      descrition: 'Operations about  tags'
-    }
+    tags: [
+      {
+        name: 'User',
+        description: 'Operations about user'
+      },
+      {
+        name: 'Publications_types',
+        description: 'Operations about Publications'
+      },
+      {
+        name: 'Publications',
+        description: 'Operations about Publications'
+      },
+      {
+        name: 'States',
+        description: 'Operations about states'
+      },
+      {
+        name: 'Cities',
+        description: 'Operations about cities'
+      },
+      {
+        name: 'Roles',
+        description: 'Operations about roles'
+      },
+      {
+        name: 'Auth',
+        description: 'Operations about authorization'
+      },
+      {
+        name: 'Tags',
+        descrition: 'Operations about  tags'
+      }
     ],
     components: {
       securitySchemes: {
@@ -90,7 +91,7 @@ const options = {
         },
         Publications: {
           type: 'object',
-          required: ['profile_id', 'publication_type_id', 'title', 'description', 'urlShare','tags'],
+          required: ['profile_id', 'publication_type_id', 'title', 'description', 'urlShare', 'tags'],
           properties: {
             // profile: {
             //   type: 'string',
@@ -101,28 +102,28 @@ const options = {
             idPublicationType: {
               type: 'string',
               format: 'integer',
-              required:true,
+              required: true,
               example: '1'
             },
             title: {
               type: 'string',
               example: 'newTitle',
-              required:true,
+              required: true,
             },
             description: {
               type: 'string',
               example: 'newDescription',
-              required:true,
+              required: true,
             },
             urlShare: {
               type: 'string',
               example: 'newUrl',
-              required:true,
+              required: true,
             },
             tags: {
               type: 'string',
               example: '1,2,3',
-              required:true,
+              required: true,
             },
             // picture: {
             //   type: 'string',
@@ -393,7 +394,7 @@ const options = {
                   type: 'object',
                   properties: {
                     email: {
-                      type: 'string', format: 'email', required: true, example: 'unknown@email.com'
+                      type: 'string', format: 'email', required: true, example: 'new@email.com'
                     },
                     password: {
                       type: 'string', required: true, example: 'pass1234'
@@ -459,7 +460,7 @@ const options = {
                   type: 'object',
                   properties: {
                     email: {
-                      type: 'string', format: 'email', required: true, example: 'unknown@email.com'
+                      type: 'string', format: 'email', required: true, example: 'new@email.com'
                     }
                   }
                 }
@@ -677,7 +678,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -686,7 +687,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -835,7 +836,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -844,7 +845,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -853,7 +854,7 @@ const options = {
               name: 'tags',
               in: 'query',
               description: 'Tags ID to filter | <strong>Verify that the Tag ID exists</strong> | All the tags that you want to filter must be inside a string separated by commas | ',
-              schema:{
+              schema: {
                 type: 'String'
               },
               example: '1,2,3'
@@ -1119,6 +1120,9 @@ const options = {
                                 updated_at: {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
+                                votes_count: {
+                                  type: 'integer', example: '1'
+                                },
                                 City: {
                                   type: 'object',
                                   properties: {
@@ -1294,7 +1298,7 @@ const options = {
         }
       },
       '/api/v1/publications/{publicationId}/vote': {
-        get: {
+        post: {
           tags: [
             'Publications'
           ],
@@ -1416,9 +1420,6 @@ const options = {
                           },
                           last_name: {
                             type: 'string', example: 'nowLastName'
-                          },
-                          email: {
-                            type: 'string', example: 'now@email.com'
                           },
                           username: {
                             type: 'string', example: 'nowFirstName'
@@ -1573,7 +1574,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -1582,7 +1583,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -1656,6 +1657,9 @@ const options = {
                                     },
                                     updated_at: {
                                       type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                    },
+                                    votes_count: {
+                                      type: 'integer', example: '1'
                                     },
                                     City: {
                                       type: 'object',
@@ -1785,7 +1789,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -1794,7 +1798,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -1848,7 +1852,10 @@ const options = {
                                 },
                                 updated_at: {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                                }
+                                },
+                                votes_count: {
+                                  type: 'integer', example: '1'
+                                },
                               }
                             }
                           }
@@ -1889,7 +1896,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -1898,7 +1905,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -1986,7 +1993,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -1995,7 +2002,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -2080,7 +2087,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -2089,7 +2096,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -2166,15 +2173,15 @@ const options = {
           tags: [
             'Roles'
           ],
-          summary: 'Get all roles',
-          description: 'Search all Roles',
+          summary: 'Get all roles | Only admins',
+          description: 'Search all Roles  | <strong>Only admins</strong>',
           operationId: 'getAllRoles',
           parameters: [
             {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -2183,7 +2190,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -2264,7 +2271,7 @@ const options = {
               name: 'size',
               in: 'query',
               description: 'Pagination | How many instances per request',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '10'
@@ -2273,7 +2280,7 @@ const options = {
               name: 'page',
               in: 'query',
               description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
-              schema:{
+              schema: {
                 type: 'integer'
               },
               example: '1'
@@ -2417,7 +2424,7 @@ const options = {
             'Tags'
           ],
           summary: 'Update my tag',
-          description:`Update tag information | <strong>Only ADMIN</strong>`,
+          description: `Update tag information | <strong>Only ADMIN</strong>`,
           operationId: 'putTag',
           parameters: [
             {

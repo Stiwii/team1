@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 
 const { getStates } = require('../controllers/states.controller')
-const checkQueryParameters= require('../middlewares/checkQuery.middleware')
-
+const checkRequest= require('../middlewares/joiRequest.middleware')
+const { querySchema } = require('../utils/validationSchemes')
 
 router.route('/')
-  .get(checkQueryParameters,getStates)
+  .get(checkRequest('query',querySchema),getStates)
 
 
 module.exports = router

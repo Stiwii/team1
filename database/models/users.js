@@ -63,6 +63,9 @@ module.exports = (sequelize, DataTypes) => {
       set_token: {
         attributes: ['id', 'first_name', 'last_name', 'email', 'username','token']
       },
+      not_email: {
+        attributes: ['id', 'first_name', 'last_name', 'username']
+      },
       check_user: {
         attributes: ['id', 'first_name', 'last_name', 'email', 'username', 'password']
       },

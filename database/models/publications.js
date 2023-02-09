@@ -30,19 +30,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BIGINT
     },
     title: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate:{
+        notEmpty:true
+      }
     },
     description: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      validate:{
+        notEmpty:true
+      }
     },
     content: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      validate:{
+        notEmpty:true
+      }
     },
     picture: {
       type: DataTypes.STRING,
     },
     city_id: {
-      type: DataTypes.BIGINT
+      type: DataTypes.BIGINT,
+      validate:{
+        notEmpty:true
+      }
     },
     image_url: {
       type: DataTypes.STRING

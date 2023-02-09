@@ -89,7 +89,7 @@ const restorePassword = async (request, response, next) => {
     try {
       data = JSON.parse(atob((request.params.token).split('.')[1]))
     } catch (error) {
-      throw new CustomError(`${error.name} : ${error.message}`, 401, 'Unauthorized')
+      throw new CustomError(`Token ${error.name} : ${error.message}`, 401, 'Unauthorized')
     }
     await authService.changePassword(data, password, (request.params.token))
     response.status(200).json({ message: 'update success' })

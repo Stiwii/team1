@@ -50,7 +50,7 @@ class CitiesService {
   // }
   //Return Instance if we do not converted to json (or raw:true)
   async getCityOr404(id) {
-    let city = await models.Cities.findByPk(id)
+    let city = await models.Cities.findByPk(id, { raw: true })
 
     if (!city) throw new CustomError('Not found City', 404, 'Not Found')
 

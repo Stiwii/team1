@@ -1,5 +1,5 @@
 const models = require('../database/models')
-const { Op } = require('sequelize')
+const { Op,cast, literal } = require('sequelize')
 const CustomError = require('../utils/custom-error')
 const PublicationsService = require('../services/publications.service')
 
@@ -14,6 +14,10 @@ class VotesService {
       where: { profile_id: profileId },
       include: [{
         model: models.Publications.scope('public_view'),
+        attributes: {
+          include:[
+          [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publication"."id")`), 'integer'), 'votes_count']
+        ]},
         include: [{
           model: models.Cities.scope('get_city'),
           as: 'city',
@@ -90,7 +94,7 @@ class VotesService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getVoteOr404(id) {
-    let vote = await models.Votes.findByPk(id)
+    let vote = await models.Votes.findByPk(id,{ raw: true })
 
     if (!vote) throw new CustomError('Not found Vote', 404, 'Not Found')
 
@@ -106,7 +110,7 @@ class VotesService {
   async updateVote(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let vote = await models.Votes.findByPk(id)
+      let vote = await models.Votes.findByPk(id,{ raw: true })
       if (!vote) throw new CustomError('Not found vote', 404, 'Not Found')
       let updatedVote = await vote.update(obj, {
         where: {
@@ -124,7 +128,7 @@ class VotesService {
   async removeVote(id) {
     const transaction = await models.sequelize.transaction()
     try {
-      let vote = await models.Votes.findByPk(id)
+      let vote = await models.Votes.findByPk(id,{ raw: true })
       if (!vote) throw new CustomError('Not found vote', 404, 'Not Found')
       await vote.destroy({ transaction })
       await transaction.commit()

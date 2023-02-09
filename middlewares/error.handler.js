@@ -1,3 +1,4 @@
+const { object } = require('joi')
 const { ValidationError, DatabaseError, BaseError,
   ConnectionError, ConnectionAcquireTimeoutError, ConnectionRefusedError, ConnectionTimedOutError, InvalidConnectionError
 } = require('sequelize')
@@ -80,7 +81,8 @@ function ormErrorHandler(err, req, res, next) {
     return res.status(409).json({
       statusCode: 409,
       errorName: err.name,
-      message: err.message,
+      // message: err.message,
+      message: err.errors.map(er => `( ${er.type} : ${er.message} )`).toString()
       // errors: err.errors
     })
   }
@@ -88,7 +90,7 @@ function ormErrorHandler(err, req, res, next) {
     return res.status(409).json({
       statusCode: 409,
       errorName: err.name,
-      message: err.message,
+      message:`${err['sql'].slice(err['sql'].indexOf('WHERE "')+7,err['sql'].lastIndexOf('" IN ('))} : ${err.message}`,
       // errorOriginal: err['original'],
       // parametros: err['parameters'],
       // errors: err.errors,
@@ -98,7 +100,7 @@ function ormErrorHandler(err, req, res, next) {
   }
   if (err instanceof BaseError) {
     return res.status(409).json({
-      statusCode: '409',
+      statusCode: 409,
       errorName: err.name,
       message: err.message,
       // errorOriginal: err['original'],

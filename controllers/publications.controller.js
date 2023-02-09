@@ -60,7 +60,6 @@ const addPublication = async (request, response, next) => {
     await tagsService.getTagsOr404(tags)
     let publication = await publicationsService.createPublication({ profile_id, idPublicationType, title, description, urlShare, tags })
     return response.status(201).json({ results: publication })
-
   } catch (error) {
     next(error)
   }

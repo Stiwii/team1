@@ -21,10 +21,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
     },
     country_id: {
-      type: DataTypes.BIGINT
+      type: DataTypes.BIGINT,
+      validate:{
+        notEmpty:true
+      }
     },
     name: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate:{
+        notEmpty:true
+      }
     }
   }, {
     sequelize,

@@ -1,18 +1,19 @@
 const models = require('../database/models')
 const uuid = require('uuid')
-const { Op } = require('sequelize')
+const { Op, cast, literal } = require('sequelize')
 const  CustomError  = require('../utils/custom-error')
 
 class PublicationsService {
-
+  
   constructor() {
-
   }
-
   async findAndCount(query) {
     const { limit, offset, tags } = query
   
     const options = {
+      attributes:{include:[
+        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+      ]},
       include: [{
         model: models.Cities.scope('get_city'),
         as: 'city',
@@ -63,9 +64,10 @@ class PublicationsService {
   async findAndCount2(query, profileId) {
     const options = {
       where: { profile_id: profileId },
-      // include: [{
-      //   model: models.Publications.scope('public_view')
-      // }]
+      attributes: {
+        include:[
+        [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
+      ]},
     }
 
     const { limit, offset } = query
@@ -162,7 +164,7 @@ class PublicationsService {
   async updatePublication(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(id)
+      let publication = await models.Publications.findByPk(id,{ raw: true })
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
@@ -184,7 +186,7 @@ class PublicationsService {
   async removePublication(idPublication, profileId) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(idPublication)
+      let publication = await models.Publications.findByPk(idPublication,{ raw: true })
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 

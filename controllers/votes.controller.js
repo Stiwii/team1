@@ -30,7 +30,6 @@ const addVote = async (request, response, next) => {
   try {
     let {profileId} = request.user
     let {idPublication} = request.params
-
     let vote = await votesService.createVote({ idPublication, profileId })
     if (vote == 1) {
       return response.status(200).json({
