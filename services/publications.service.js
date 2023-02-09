@@ -56,12 +56,11 @@ class PublicationsService {
         through: { attributes: [] }
       })
     }
-
-    const { publications_types } = query
+    const { publicationsTypes } = query
     
-    if (publications_types) {
-      let publicationsIDs = publications_types.split(',')
-      options.where.publication_type_id = { [Op.or]: publicationsIDs }
+    if (publicationsTypes) {
+      let publicationsTypeIds = publicationsTypes.split(',')
+      options.where.publication_type_id = { [Op.or]: publicationsTypeIds }
     }
 
     const { title } = query

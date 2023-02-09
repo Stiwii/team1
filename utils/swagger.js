@@ -861,6 +861,33 @@ const options = {
                 type: 'String'
               },
               example: '1,2,3'
+            },
+            {
+              name: 'publicationsTypes',
+              in: 'query',
+              description: 'Publication Types IDs to filter | <strong>Verify that the Publication Types ID exists</strong> | All Publication Types Ids that you want to filter must be inside a string separated by commas | ',
+              schema: {
+                type: 'String'
+              },
+              example: '1,2,3'
+            },
+            {
+              name: 'title',
+              in: 'query',
+              description: 'Title to filter | <strong>Verify that the title in any publication exists</strong> | ',
+              schema: {
+                type: 'String'
+              },
+              example: 'new'
+            },
+            {
+              name: 'description',
+              in: 'query',
+              description: 'Description ID to filter | <strong>Verify that the description exists in any publication</strong> | ',
+              schema: {
+                type: 'String'
+              },
+              example: 'descrip'
             }
           ],
           responses: {

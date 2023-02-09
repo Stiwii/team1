@@ -34,7 +34,7 @@ const querySchema = Joi.object({
   tags : Joi.string(),
   title: Joi.string(),
   description: Joi.string(),
-  publications_types: Joi.string()
+  publicationsTypes: Joi.string()
 })
 
 const updateTagSchema = Joi.object({
