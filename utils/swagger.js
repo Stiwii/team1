@@ -13,6 +13,10 @@ const options = {
     servers: [{ url: process.env.DOMAIN }],
     tags: [
       {
+        name: 'Auth',
+        description: 'Operations about authorization'
+      },
+      {
         name: 'User',
         description: 'Operations about user'
       },
@@ -35,10 +39,6 @@ const options = {
       {
         name: 'Roles',
         description: 'Operations about roles'
-      },
-      {
-        name: 'Auth',
-        description: 'Operations about authorization'
       },
       {
         name: 'Tags',
