@@ -92,10 +92,10 @@ const getEmail = async (request, response, next) => {
 const updateUser = async (request, response, next) => {
   try {
     let { idUSer } = request.params
-    let profile_id = request.user.profileId
+    let profileId = request.user.profileId
     if (idUSer == request.user.id) {
-      let { username, first_name, last_name, image_url, code_phone, phone } = request.body
-      let user = await usersService.updateUser(idUSer, { profile_id, username, first_name, last_name, image_url, code_phone, phone })
+      let { username, firstName, lastName, imageUrl, codePhone, phone } = request.body
+      let user = await usersService.updateUser(idUSer, { profileId, username, firstName, lastName, imageUrl, codePhone, phone })
       return response.status(200).json({ result: user })
     } else {
       throw new CustomError('User not authorized,check the userID params', 401, 'Unauthorized')

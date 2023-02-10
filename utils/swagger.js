@@ -387,7 +387,7 @@ const options = {
             'Auth'
           ],
           summary: 'Login to the page',
-          description: 'The login returns the token of the registered user that is only public, in the case that it is admin it returns two tokens, a public token and an admin token',
+          description: 'The login returns the token of the registered user that is only public, in the case that it is admin it returns two tokens, a public token and an admin token | <strong>The token has a time limit of 24 hours</strong>',
           operationId: 'LogIn',
           requestBody: {
             description: 'After login you will receive a token',
@@ -1498,16 +1498,16 @@ const options = {
                     username: {
                       type: 'string', example: 'nowUserName'
                     },
-                    first_name: {
+                    firstName: {
                       type: 'string', required: true, example: 'nowFirstName'
                     },
-                    last_name: {
+                    lastName: {
                       type: 'string', required: true, example: 'nowLastName'
                     },
-                    image_url: {
+                    imageUrl: {
                       type: 'string', format: 'url', example: 'www.nowImage.com'
                     },
-                    code_phone: {
+                    codePhone: {
                       type: 'integer', example: '55'
                     },
                     phone: {

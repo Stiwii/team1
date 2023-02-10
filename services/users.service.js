@@ -104,26 +104,26 @@ class UsersService {
   async updateUser(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let profileID = obj.profile_id
-      let user = await models.Users.scope('public_view').findByPk(id,{ raw: true })
+      let profileID = obj.profileId
+      let user = await models.Users.scope('public_view').findByPk(id)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
       let profile = await models.Profiles.findByPk(profileID)
       if (!profile) throw new CustomError('Not found user', 404, 'Not Found')
+      
+      await user.update({
+        username:obj.username,
+        first_name:obj.firstName,
+        last_name:obj.lastName
+      }, { transaction })
 
-      let updatedUser = await user.update(obj, { transaction })
-
-      let updatedProfile = await profile.update(obj, { transaction })
-
-      await transaction.commit()
-      return ({
-        username: updatedUser.username,
-        first_name: updatedUser.first_name,
-        last_name: updatedUser.last_name,
-        image_url: updatedProfile.image_url,
-        code_phone: updatedProfile.code_phone,
-        phone: updatedProfile.phone
-      })
+      await profile.update({
+        image_url:obj.imageUrl,
+        code_phone:obj.codePhone,
+        phone:obj.phone
+      }, { transaction })
+  await transaction.commit()
+      return 'updated user'
     } catch (error) {
       await transaction.rollback()
       throw error
