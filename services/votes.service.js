@@ -76,16 +76,16 @@ class VotesService {
         await transaction.commit()
         return value
       }
-      let data = await models.Votes.create({
+      let votes = await models.Votes.create({
         profile_id: profileId,
         publication_id: idPublication
       }, { transaction })
       await transaction.commit()
       return {
-        publication_id: data.publication_id,
-        profile_id: data.profile_id,
-        updated_at: data.updated_at,
-        created_at: data.created_at
+        publication_id: votes.publication_id,
+        profile_id: votes.profile_id,
+        updated_at: votes.updated_at,
+        created_at: votes.created_at
       }
     } catch (error) {
       await transaction.rollback()

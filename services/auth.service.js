@@ -37,8 +37,8 @@ class AuthService {
   async changePassword({ id, exp }, newPassword, token) {
     try {
       await usersService.verifiedTokenUser(id, token,exp)
-      let data = await usersService.updatePassword(id, newPassword)
-      return data
+      let restoreUser = await usersService.updatePassword(id, newPassword)
+      return restoreUser
     } catch (error) {
       throw error
     }

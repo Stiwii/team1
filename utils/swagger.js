@@ -2605,7 +2605,7 @@ const swaggerDocs = (app, /*port*/) => {
     res.send(swaggerSpec)
   })
   console.log(
-    'SWAGGER HOST: /api/v1/docs '
+     `SWAGGER HOST: : http://localhost:${process.env.PORT}/api/v1/docs`
   )
 }
 

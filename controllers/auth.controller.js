@@ -17,7 +17,8 @@ const logIn = async (request, response, next) => {
       email: user.email,
       role: user.profile[0].role.name,
       profileId: user.profile[0].id
-    }, process.env.JWT_SECRET_WORD)
+    }, process.env.JWT_SECRET_WORD,
+    { expiresIn: '24h' })
 
     if (user.profile[1]) {
       const tokenAdmin = jwt.sign({
@@ -25,7 +26,8 @@ const logIn = async (request, response, next) => {
         email: user.email,
         role: user.profile[1].role.name,
         profileId: user.profile[1].id
-      }, process.env.JWT_SECRET_WORD)
+      }, process.env.JWT_SECRET_WORD,
+      { expiresIn: '24h' })
 
       response.status(200).json({
         message: 'Correct Credentials!',
@@ -61,15 +63,15 @@ const forgetPassword = async (request, response, next) => {
   try {
     let errorCounter = 0
     let errorMessage = null
-    let data = await authService.createRecoveryToken(email)
-    let user = await usersService.setTokenUser(data.user.id, data.token)
+    let userTokenEmail = await authService.createRecoveryToken(email)
+    let user = await usersService.setTokenUser(userTokenEmail.user.id, userTokenEmail.token)
     try {
       mailer.sendMail({
         from: process.env.MAIL_SEND,
         to: user.email,
         subject: 'Restore Password ',
-        html: `<span>${process.env.DOMAIN}api/v1/auth/change-password/${data.token}</span>`
-        // html: `<a href='${process.env.HOST_CLOUD}/api/v1/auth/change-password/${data.token}'>Restore password</a>`
+        html: `<span>${process.env.DOMAIN}api/v1/auth/change-password/${userTokenEmail.token}</span>`
+        // html: `<a href='${process.env.HOST_CLOUD}/api/v1/auth/change-password/${userTokenEmail.token}'>Restore password</a>`
       })
     } catch (error) {
       errorCounter += 1
@@ -85,13 +87,13 @@ const forgetPassword = async (request, response, next) => {
 const restorePassword = async (request, response, next) => {
   const { password } = request.body
   try {
-    let data
+    let payloadToken
     try {
-      data = JSON.parse(atob((request.params.token).split('.')[1]))
+      payloadToken = JSON.parse(atob((request.params.token).split('.')[1]))
     } catch (error) {
       throw new CustomError(`Token ${error.name} : ${error.message}`, 401, 'Unauthorized')
     }
-    await authService.changePassword(data, password, (request.params.token))
+    await authService.changePassword(payloadToken, password, (request.params.token))
     response.status(200).json({ message: 'update success' })
   } catch (error) {
     next(error)
