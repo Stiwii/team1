@@ -54,7 +54,7 @@ class UsersService {
 
   //Return not an Instance raw:true | we also can converted to Json instead
   async getUserOr404(id) {
-    let user = await models.Users.scope('not_email').findByPk(id, { raw: true })
+    let user = await models.Users.scope('not_email').findByPk(id)
     if (!user) throw new CustomError('Not found user', 404, 'Not Found')
     return user 
   }
@@ -133,7 +133,7 @@ class UsersService {
   async updatePassword(id, newPassword) {
     const transaction = await models.sequelize.transaction()
     try {
-      let user = await models.Users.scope('public_view').findByPk(id,{ raw: true })
+      let user = await models.Users.scope('public_view').findByPk(id)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
       let restoreUser = await user.update({ password: hashPassword(newPassword) }, { transaction })
       await transaction.commit()
@@ -147,7 +147,7 @@ class UsersService {
   async setTokenUser(id, token) {
     const transaction = await models.sequelize.transaction()
     try {
-      let user = await models.Users.scope('set_token').findByPk(id,{ raw: true })
+      let user = await models.Users.scope('set_token').findByPk(id)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
       let User = await user.update({ token: token }, { transaction })
 
@@ -213,7 +213,7 @@ class UsersService {
   async removeUser(idUSer) {
     const transaction = await models.sequelize.transaction()
     try {
-      let user = await models.Users.findByPk(idUSer,{ raw: true })
+      let user = await models.Users.findByPk(idUSer)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
       await user.destroy({ transaction })
       await transaction.commit()
@@ -228,7 +228,7 @@ class UsersService {
   async removeTokenUser(id) {
     const transaction = await models.sequelize.transaction()
     try {
-      let user = await models.Users.scope('public_view').findByPk(id,{ raw: true })
+      let user = await models.Users.scope('public_view').findByPk(id)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
       await user.update({ token: null }, { transaction })

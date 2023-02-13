@@ -48,7 +48,7 @@ class CountriesService {
   // }
   //Return Instance if we do not converted to json (or raw:true)
   async getCountryOr404(id) {
-    let country = await models.Countries.findByPk(id, { raw: true })
+    let country = await models.Countries.findByPk(id)
 
     if (!country) throw new CustomError('Not found Country', 404, 'Not Found')
 

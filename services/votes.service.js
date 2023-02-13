@@ -98,7 +98,7 @@ class VotesService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getVoteOr404(id) {
-    let vote = await models.Votes.findByPk(id,{ raw: true })
+    let vote = await models.Votes.findByPk(id)
 
     if (!vote) throw new CustomError('Not found Vote', 404, 'Not Found')
 
@@ -114,7 +114,7 @@ class VotesService {
   async updateVote(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let vote = await models.Votes.findByPk(id,{ raw: true })
+      let vote = await models.Votes.findByPk(id)
       if (!vote) throw new CustomError('Not found vote', 404, 'Not Found')
       let updatedVote = await vote.update(obj, {
         where: {
@@ -132,7 +132,7 @@ class VotesService {
   async removeVote(id) {
     const transaction = await models.sequelize.transaction()
     try {
-      let vote = await models.Votes.findByPk(id,{ raw: true })
+      let vote = await models.Votes.findByPk(id)
       if (!vote) throw new CustomError('Not found vote', 404, 'Not Found')
       await vote.destroy({ transaction })
       await transaction.commit()

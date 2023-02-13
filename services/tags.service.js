@@ -48,7 +48,7 @@ class TagsService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getTagOr404(id) {
-    let tag = await models.Tags.findByPk(id,{ raw: true })
+    let tag = await models.Tags.findByPk(id)
 
     if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 
@@ -76,7 +76,7 @@ class TagsService {
   async updateTag(idTag, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let tag = await models.Tags.findByPk(idTag,{ raw: true })
+      let tag = await models.Tags.findByPk(idTag)
       if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
       
       let updatedTag = await tag.update(obj, {
@@ -97,7 +97,7 @@ class TagsService {
   async removeTag(idTag) {
     const transaction = await models.sequelize.transaction()
     try {
-      let tag = await models.Tags.findByPk(idTag,{ raw: true })
+      let tag = await models.Tags.findByPk(idTag)
 
       if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 

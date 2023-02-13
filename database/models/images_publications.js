@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { getObjectSignedUrl } = require('../../libs/s3')
 module.exports = (sequelize, DataTypes) => {
   class Images_publications extends Model {
     /**
@@ -18,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true
     },
-    key_s3:{
+    key_s3: {
       type: DataTypes.STRING,
     },
     publication_id: {
@@ -28,19 +29,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT
     }
   }, {
-    sequelize,
+  sequelize,
     modelName: 'Images_publications',
-    tableName: 'images_publications',  // y la tabla en la DB para ser explicitos
-    underscored: true,
-    timestamps: true,
-    scopes: {
-      public_view: {
-        attributes: ['id', 'key_s3', 'publication_id','image_url']
-      },
-      images_publication: {
-        attributes: ['id','image_url']
-      }
+      tableName: 'images_publications',  // y la tabla en la DB para ser explicitos
+        underscored: true,
+          timestamps: true,
+            scopes: {
+    public_view: {
+      attributes: ['id', 'key_s3', 'publication_id', 'image_url']
     },
-  });
-  return Images_publications;
+    images_publication: {
+      attributes: ['id', 'key_s3']
+    },
+    virtual: {
+      attributes: ['id', 'key_s3', 'singedURL']
+    }
+  },
+});
+return Images_publications;
 };

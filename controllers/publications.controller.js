@@ -1,3 +1,4 @@
+const { getObjectSignedUrl } = require('../libs/s3')
 const PublicationsService = require('../services/publications.service')
 const PublicationsTypeService = require('../services/publications_types.service')
 const TagsService = require('../services/tags.service')
@@ -72,6 +73,15 @@ const getPublication = async (request, response, next) => {
   try {
     let { idPublication } = request.params
     let publication = await publicationsService.getPublicationOr404(idPublication)
+    //transform publication to plaintext and mantain your attributes.
+    let plainPublication = publication.get({ plain: true })
+    // this promise modify directly publication 
+    //funciona no sabemos por que 
+    await Promise.all(plainPublication.images_publication.map(async (image) => {
+      image.imageURL = await getObjectSignedUrl(image.key_s3)
+    }
+    //
+    ))
     return response.json({ results: publication })
   } catch (error) {
     next(error)
@@ -82,6 +92,15 @@ const getPublicationsByUser = async (request, response, next) => {
   try {
     let profileId = request.user.profileId
     let publication = await publicationsService.findPublicationByProfileOr404(profileId)
+    //transform publication to plaintext and mantain your attributes.
+    let plainPublication = publication.get({ plain: true })
+    // this promise modify directly publication 
+    //funciona no sabemos por que 
+    await Promise.all(plainPublication.images_publication.map(async (image) => {
+      image.imageURL = await getObjectSignedUrl(image.key_s3)
+    }
+    //
+    ))
     return response.json({ results: publication })
   } catch (error) {
     next(error)

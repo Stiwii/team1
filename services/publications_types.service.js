@@ -49,7 +49,7 @@ class PublicationsTypesService {
   //Return Instance if we do not converted to json (or raw:true)
 
   async getPublicationTypeOr404(idPublicationType) {
-    let publicationType = await models.Publications_types.findByPk(idPublicationType, { raw: true })
+    let publicationType = await models.Publications_types.findByPk(idPublicationType)
     if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
 
     return publicationType

@@ -53,7 +53,7 @@ class ProfilesService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getProfileOr404(id) {
-    let profile = await models.Profiles.findByPk(id,{raw:true})
+    let profile = await models.Profiles.findByPk(id)
 
     if (!profile) throw new CustomError('Not found Profile', 404, 'Not Found')
 

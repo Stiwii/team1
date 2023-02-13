@@ -31,7 +31,7 @@ class ImagesPublicationsService {
   async removeImage(idImage) {
     const transaction = await models.sequelize.transaction()
     try {
-      let image = await models.Images_publications.scope('public_view').findByPk(idImage, { raw: false })
+      let image = await models.Images_publications.scope('public_view').findByPk(idImage)
 
       if (!image) throw new CustomError('Not found image', 404, 'Not Found')
 
@@ -47,7 +47,7 @@ class ImagesPublicationsService {
   }
 
   async getImageOr404(idImage) {
-    let image = await models.Images_publications.findByPk(idImage, { raw: false })
+    let image = await models.Images_publications.findByPk(idImage)
     if (!image) throw new CustomError('Not found image', 404, 'Not Found')
     return image
   }

@@ -4,6 +4,7 @@ const util = require('util')
 const uuid = require('uuid')
 const { uploadFile, getObjectSignedUrl, deleteFile, getFileStream } = require('../libs/s3')
 const sharp = require('sharp')
+const { log } = require('console')
 
 
 const unlinkFile = util.promisify(fs.unlink)
@@ -84,10 +85,15 @@ const getUrlAllImagesByPublication = async (request, response, next) => {
   try {
     const { idPublication } = request.params;
     const imagesPublication = await imagesPublicationsService.getImagesByPublicationsOr404(idPublication)
-    // for (let imagesPublication of imagesPublications) {
-    //     imagesPublication.image_url = await getObjectSignedUrl(imagesPublication.key_s3)
-    // }
-    return response.status(200).json({ images: imagesPublication })
+    // console.log(imagesPublication[1].key_s3)
+
+    const imgPublications = await Promise.all(imagesPublication.map(async (imagePublication) => {
+      let imageURL = await getObjectSignedUrl(imagePublication.key_s3)
+      imagePublication.image_url = imageURL
+      return imagePublication
+    }))
+  
+    return response.status(200).json({ images: imgPublications })
   } catch (error) {
     next(error)
   }

@@ -182,6 +182,7 @@ class PublicationsService {
       ]
     })
     if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
+
     return publication
   }
 
@@ -200,7 +201,7 @@ class PublicationsService {
   async updatePublication(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(id, { raw: true })
+      let publication = await models.Publications.findByPk(id)
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
@@ -222,7 +223,7 @@ class PublicationsService {
   async removePublication(idPublication, profileId) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(idPublication, { raw: false })
+      let publication = await models.Publications.findByPk(idPublication)
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
