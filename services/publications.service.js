@@ -64,7 +64,6 @@ class PublicationsService {
     }
 
     const { title } = query
-    console.log(title)
     if (title) {
       options.where.title = { [Op.iLike]: `%${title}%` }
     }
@@ -212,7 +211,7 @@ class PublicationsService {
   async removePublication(idPublication, profileId) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publication = await models.Publications.findByPk(idPublication, { raw: true })
+      let publication = await models.Publications.findByPk(idPublication, { raw: false })
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 

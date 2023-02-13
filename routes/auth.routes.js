@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { logIn,forgetPassword,restorePassword } = require('../controllers/auth.controller')
-const { signupSchema,loginSchema,recoverPasswordSchema,restorePasswordSchema,tokenSchema } = require('../utils/validationSchemes')
+// const { signupSchema,loginSchema,recoverPasswordSchema,restorePasswordSchema,tokenSchema } = require('../utils/validationSchemes')
 
 const { registerUser } = require('../controllers/users.controller')
 

@@ -1318,6 +1318,233 @@ const options = {
             }]
         }
       },
+      '/api/v1/publications/{publicationId}/images': {
+        get: {
+          tags: [
+            'Publications'
+          ],
+          summary: 'Get Images by publication (URLs) ',
+          description: 'Get the urls of the images that have a publication',
+          operationId: 'getUrlsImagePublication',
+          parameters: [
+            {
+              name: 'publicationId',
+              in: 'path',
+              description: 'ID of Publication',
+              required: true,
+              schema: {
+                type: 'string'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          images: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                image_url: {
+                                  type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
+            }
+          },
+        },
+        post: {
+          tags: [
+            'Publications'
+          ],
+          summary: 'Add images to publication',
+          description: `<ul> 
+          <li>Only allows adding images to the creator of the publication</li> 
+          <li><strong>It is not allowed to add more images</strong>, if the publication already registers at least one image</li> 
+          </ul>`,
+          operationId: 'addImagesPublication',
+          parameters: [
+            {
+              name: 'publicationId',
+              in: 'path',
+              description: 'ID of publication',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          requestBody: {
+            description:
+              `<ul> 
+              <li><strong>Only 3 images are allowed maximum</strong></li> 
+              <li>Only <strong>jpg, jpeg and png </strong> image formats are allowed</li> 
+              <li>The image can only weigh a <strong>maximum of 3mb</strong></li>
+              <li>There is no resolution limit it will be resized to 1920x1080</li> 
+              </ul>`,
+            content: {
+              'multipart/form-data': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    image: {
+                      type: 'array',
+                      items: {
+                        type: 'string',
+                        format: 'binary'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            201: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          message: {
+                            type: 'string',  example: 'success upload'
+                          },
+                          images: {
+                            type: 'array',
+                            items : {
+                              type: 'string', example: 'publications-images-014f03f1-fdcc-4a1c-88c1-bc3ecc1953d2-b68b27ef-a07a-48ter-9013-a09335ef8c7f'
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
+            }
+          },
+          security: [
+            {
+              bearerAuth: []
+            }]
+        },
+        delete: {
+          tags: [
+            'Publications'
+          ],
+          summary: 'Delete images from a publication',
+          description: `<ul> 
+          <li><strong>Delete all the images of a publication</strong></li> 
+          <li>You can only delete the post created by the user</li> 
+          </ul>`,
+          operationId: 'removeImagePublication',
+          parameters: [
+            {
+              name: 'publicationId',
+              in: 'path',
+              description: 'ID of publication',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      message: {
+                        type: 'object',
+                        example : 'Images Deleted'
+                      },
+                      imagesPublications: {
+                        type: 'array',
+                        items: {
+                          type : 'object',
+                          properties :{
+                            idPublication:{
+                              type: 'string',
+                              format: 'uuid',
+                              example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                            },
+                            idImage:{
+                              type: 'string',
+                              format: 'uuid',
+                              example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
+            }
+          },
+          security: [
+            {
+              bearerAuth: []
+            }]
+        }
+      },
       '/api/v1/publications/{publicationId}/vote': {
         post: {
           tags: [
@@ -2605,7 +2832,7 @@ const swaggerDocs = (app, /*port*/) => {
     res.send(swaggerSpec)
   })
   console.log(
-     `SWAGGER HOST: : http://localhost:${process.env.PORT}/api/v1/docs`
+    `SWAGGER HOST: : http://localhost:${process.env.PORT}/api/v1/docs`
   )
 }
 
