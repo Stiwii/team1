@@ -1006,6 +1006,19 @@ const options = {
                                       }
                                     }
                                   }
+                                },
+                                images_publication: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                      },
+                                      image_url: {
+                                        type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -1200,6 +1213,19 @@ const options = {
                                       },
                                       name: {
                                         type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
+                                },
+                                images_publication: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                      },
+                                      image_url: {
+                                        type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
                                       }
                                     }
                                   }
@@ -1440,11 +1466,11 @@ const options = {
                         type: 'object',
                         properties: {
                           message: {
-                            type: 'string',  example: 'success upload'
+                            type: 'string', example: 'success upload'
                           },
                           images: {
                             type: 'array',
-                            items : {
+                            items: {
                               type: 'string', example: 'publications-images-014f03f1-fdcc-4a1c-88c1-bc3ecc1953d2-b68b27ef-a07a-48ter-9013-a09335ef8c7f'
                             }
                           }
@@ -1503,19 +1529,19 @@ const options = {
                     properties: {
                       message: {
                         type: 'object',
-                        example : 'Images Deleted'
+                        example: 'Images Deleted'
                       },
                       imagesPublications: {
                         type: 'array',
                         items: {
-                          type : 'object',
-                          properties :{
-                            idPublication:{
+                          type: 'object',
+                          properties: {
+                            idPublication: {
                               type: 'string',
                               format: 'uuid',
                               example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                             },
-                            idImage:{
+                            idImage: {
                               type: 'string',
                               format: 'uuid',
                               example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
@@ -1968,6 +1994,19 @@ const options = {
                                           }
                                         }
                                       }
+                                    },
+                                    images_publication: {
+                                      type: 'array',
+                                      items: {
+                                        properties: {
+                                          id: {
+                                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                          },
+                                          image_url: {
+                                            type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
+                                          }
+                                        }
+                                      }
                                     }
                                   }
                                 }
@@ -2104,6 +2143,19 @@ const options = {
                                 votes_count: {
                                   type: 'integer', example: '1'
                                 },
+                                images_publication: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                      },
+                                      image_url: {
+                                        type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
+                                      }
+                                    }
+                                  }
+                                }
                               }
                             }
                           }

@@ -56,9 +56,6 @@ module.exports = (sequelize, DataTypes) => {
       validate:{
         notEmpty:true
       }
-    },
-    image_url: {
-      type: DataTypes.STRING
     }
   }, {
     sequelize,
@@ -70,10 +67,10 @@ module.exports = (sequelize, DataTypes) => {
     // y minimizar que se nos escape algo
     scopes: {
       public_view: {
-        attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id', 'image_url']
+        attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id']
       },
       get_publication: {
-        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture', 'image_url','created_at', 'updated_at']
+        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture','created_at', 'updated_at']
       },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }

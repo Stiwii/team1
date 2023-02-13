@@ -11,7 +11,7 @@ class PublicationsService {
     const { limit, offset, tags } = query
 
     const options = {
-      where:{},
+      where: {},
       attributes: {
         include: [
           [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
@@ -37,6 +37,9 @@ class PublicationsService {
         through: {
           attributes: []
         }
+      }, {
+        model: models.Images_publications.scope('images_publication'),
+        as: 'images_publication'
       }
       ]
     }
@@ -57,7 +60,7 @@ class PublicationsService {
       })
     }
     const { publicationsTypesIds } = query
-    
+
     if (publicationsTypesIds) {
       let publicationsTypeIds = publicationsTypesIds.split(',')
       options.where.publication_type_id = { [Op.or]: publicationsTypeIds }
@@ -88,6 +91,10 @@ class PublicationsService {
           [cast(literal(`(SELECT COUNT(*) FROM "votes" WHERE "votes"."publication_id" = "Publications"."id")`), 'integer'), 'votes_count']
         ]
       },
+      include: [{
+        model: models.Images_publications.scope('images_publication'),
+        as: 'images_publication'
+      }]
     }
 
     const { limit, offset } = query
@@ -168,7 +175,11 @@ class PublicationsService {
         through: {
           attributes: []
         }
-      }]
+      }, {
+        model: models.Images_publications.scope('images_publication'),
+        as: 'images_publication'
+      }
+      ]
     })
     if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
     return publication

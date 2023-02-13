@@ -38,6 +38,10 @@ class VotesService {
           through: {
             attributes: []
           }
+        },
+        {
+          model: models.Images_publications.scope('images_publication'),
+          as: 'images_publication'
         }]
       }],
     }
