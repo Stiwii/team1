@@ -25,7 +25,7 @@ module.exports = {
           onDelete: 'CASCADE'
         },
         image_url: {
-          type: Sequelize.STRING
+          type: Sequelize.TEXT
         },
         created_at: {
           allowNull: false,

@@ -11,12 +11,13 @@ class ImagesPublicationsService {
   constructor() {
   }
 
-  async createImage(idImage,fileKey,publicationId) {
+  async createImage(idImage,fileKey,publicationId,imageUrl) {
     const transaction = await models.sequelize.transaction()
     try {
       let newImage = await models.Images_publications.create({
         id:idImage,
         key_s3:fileKey,
+        image_url:imageUrl, // NOT ORIGINAL
         publication_id: publicationId
       }, { transaction })
       await transaction.commit()
@@ -46,38 +47,28 @@ class ImagesPublicationsService {
   }
 
   async getImageOr404(idImage) {
-
     let image = await models.Images_publications.findByPk(idImage,{ raw: false })
-
     if (!image) throw new CustomError('Not found image', 404, 'Not Found')
-
     return image
-
-
   }
 
   async getImageByPublicationIdOr404(idPublication) {
-
     let images = await models.Images_publications.findAll({
       where : {
         publication_id : idPublication
       },raw: true 
     })
-
     if (!images) throw new CustomError('Not found image', 404, 'Not Found')
-
-    return images
-    
-
+    return images 
   }
 
-  async getImagesByPublications(idPublication) {
-    let imagesPublications = await models.Images_publications.scope('public_view').findAll({
+  async getImagesByPublicationsOr404(idPublication) {
+    let imagesPublications = await models.Images_publications.scope('images_publication').findAll({
       where: {
         publication_id: idPublication
       }
     ,raw:true})
-    if (imagesPublications === null) throw new CustomError('User email not found', 404, 'Not Found')
+    if (!imagesPublications.length) throw new CustomError('Not found images', 404, 'Not Found')
     return imagesPublications
   }
 

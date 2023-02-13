@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
     },
     image_url: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     }
   }, {
     sequelize,
@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       public_view: {
         attributes: ['id', 'key_s3', 'publication_id','image_url']
+      },
+      images_publication: {
+        attributes: ['id','image_url']
       }
     },
   });
