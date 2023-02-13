@@ -11,13 +11,13 @@ class ImagesPublicationsService {
   constructor() {
   }
 
-  async createImage(idImage,fileKey,publicationId,imageUrl) {
+  async createImage(idImage, fileKey, publicationId, imageUrl) {
     const transaction = await models.sequelize.transaction()
     try {
       let newImage = await models.Images_publications.create({
-        id:idImage,
-        key_s3:fileKey,
-        image_url:imageUrl, // NOT ORIGINAL
+        id: idImage,
+        key_s3: fileKey,
+        image_url: imageUrl, // NOT ORIGINAL
         publication_id: publicationId
       }, { transaction })
       await transaction.commit()
@@ -31,7 +31,7 @@ class ImagesPublicationsService {
   async removeImage(idImage) {
     const transaction = await models.sequelize.transaction()
     try {
-      let image = await models.Images_publications.scope('public_view').findByPk(idImage,{ raw: false })
+      let image = await models.Images_publications.scope('public_view').findByPk(idImage, { raw: false })
 
       if (!image) throw new CustomError('Not found image', 404, 'Not Found')
 
@@ -47,19 +47,19 @@ class ImagesPublicationsService {
   }
 
   async getImageOr404(idImage) {
-    let image = await models.Images_publications.findByPk(idImage,{ raw: false })
+    let image = await models.Images_publications.findByPk(idImage, { raw: false })
     if (!image) throw new CustomError('Not found image', 404, 'Not Found')
     return image
   }
 
   async getImageByPublicationIdOr404(idPublication) {
     let images = await models.Images_publications.findAll({
-      where : {
-        publication_id : idPublication
-      },raw: true 
+      where: {
+        publication_id: idPublication
+      }, raw: true
     })
     if (!images) throw new CustomError('Not found image', 404, 'Not Found')
-    return images 
+    return images
   }
 
   async getImagesByPublicationsOr404(idPublication) {
@@ -67,23 +67,24 @@ class ImagesPublicationsService {
       where: {
         publication_id: idPublication
       }
-    ,raw:true})
+      , raw: true
+    })
     if (!imagesPublications.length) throw new CustomError('Not found images', 404, 'Not Found')
     return imagesPublications
   }
 
   async publicationImagesExist(publicationId) {
 
-    let publicationImagesExist = await models.Images_publications.findOne({ 
-      where : {
+    let publicationImagesExist = await models.Images_publications.findOne({
+      where: {
         publication_id: publicationId
       }
-    },{ raw: true })
+    }, { raw: true })
     if (publicationImagesExist) throw new CustomError('The publication already has images', 400, 'Can not upload')
 
     return publicationImagesExist
   }
-  
+
 }
 
 
