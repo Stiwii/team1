@@ -2,9 +2,7 @@ const models = require('../database/models')
 // const uuid = require('uuid')
 const { Op } = require('sequelize')
 const CustomError = require('../utils/custom-error')
-const { logIn } = require('../controllers/auth.controller')
 
-// const  CustomError  = require('../utils/custom-error')
 
 class ImagesPublicationsService {
 
@@ -57,7 +55,7 @@ class ImagesPublicationsService {
         publication_id: idPublication
       }, raw: true
     })
-    if (!images) throw new CustomError('Not found image', 404, 'Not Found')
+    if (!images.length) throw new CustomError('No images were found in the publication', 404, 'Not Found')
     return images
   }
 

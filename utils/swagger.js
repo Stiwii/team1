@@ -197,19 +197,10 @@ const options = {
             description: {
               type: 'string', example: 'newDescription'
             },
-            // content: {
-            //   type: 'string', example: 'newContent'
-            // },
             urlShare: {
               type: 'string',
               example: 'newUrl'
             },
-            // picture: {
-            //   type: 'string', format: 'url', example: 'www.picture.com'
-            // },
-            // image_url: {
-            //   type: 'string', format: 'url', example: 'www.image.com'
-            // },
             created_at: {
               type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
             },
@@ -1066,7 +1057,38 @@ const options = {
                     type: 'object',
                     properties: {
                       results: {
-                        '$ref': '#/components/schemas/Publication'
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          profile_id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          title: {
+                            type: 'string', example: 'newTitle'
+                          },
+                          description: {
+                            type: 'string', example: 'newDescription'
+                          },
+                          content: {
+                            type: 'string',
+                            example: 'newUrl'
+                          },
+                          city_id: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          picture: {
+                            type: 'string', example: 'null'
+                          }
+                        }
                       }
                     }
                   }
@@ -1118,116 +1140,111 @@ const options = {
                     type: 'object',
                     properties: {
                       results: {
-                        type: 'object',
-                        properties: {
-                          results: {
-                            type: 'array',
-                            items: {
+                        type: 'array',
+                        items: {
+                          properties: {
+                            id: {
+                              type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                            },
+                            profile_id: {
+                              type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                            },
+                            title: {
+                              type: 'string', example: 'newTitle'
+                            },
+                            description: {
+                              type: 'string', example: 'newDescription'
+                            },
+                            content: {
+                              type: 'string', example: 'newContent'
+                            },
+                            picture: {
+                              type: 'string', format: 'url', example: 'www.picture.com'
+                            },
+                            image_url: {
+                              type: 'string', format: 'url', example: 'www.image.com'
+                            },
+                            created_at: {
+                              type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                            },
+                            updated_at: {
+                              type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                            },
+                            votes_count: {
+                              type: 'integer', example: '1'
+                            },
+                            City: {
+                              type: 'object',
                               properties: {
                                 id: {
-                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                  type: 'string', example: '1'
                                 },
-                                profile_id: {
-                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                name: {
+                                  type: 'string', example: 'nameCity'
                                 },
-                                title: {
-                                  type: 'string', example: 'newTitle'
-                                },
-                                description: {
-                                  type: 'string', example: 'newDescription'
-                                },
-                                content: {
-                                  type: 'string', example: 'newContent'
-                                },
-                                picture: {
-                                  type: 'string', format: 'url', example: 'www.picture.com'
-                                },
-                                image_url: {
-                                  type: 'string', format: 'url', example: 'www.image.com'
-                                },
-                                created_at: {
-                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                                },
-                                updated_at: {
-                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                                },
-                                votes_count: {
-                                  type: 'integer', example: '1'
-                                },
-                                City: {
+                                State: {
                                   type: 'object',
                                   properties: {
                                     id: {
                                       type: 'string', example: '1'
                                     },
                                     name: {
-                                      type: 'string', example: 'nameCity'
+                                      type: 'string', example: 'nameState'
                                     },
-                                    State: {
+                                    Country: {
                                       type: 'object',
                                       properties: {
                                         id: {
                                           type: 'string', example: '1'
                                         },
                                         name: {
-                                          type: 'string', example: 'nameState'
-                                        },
-                                        Country: {
-                                          type: 'object',
-                                          properties: {
-                                            id: {
-                                              type: 'string', example: '1'
-                                            },
-                                            name: {
-                                              type: 'string', example: 'nameCountry'
-                                            }
-                                          }
+                                          type: 'string', example: 'nameCountry'
                                         }
                                       }
                                     }
                                   }
+                                }
+                              }
+                            },
+                            publication_type_id: {
+                              type: 'object',
+                              properties: {
+                                id: {
+                                  type: 'string', example: '1'
                                 },
-                                publication_type_id: {
-                                  type: 'object',
-                                  properties: {
-                                    id: {
-                                      type: 'string', example: '1'
-                                    },
-                                    name: {
-                                      type: 'string', example: 'namePublicationType'
-                                    },
-                                    description: {
-                                      type: 'string', example: 'info publication'
-                                    }
+                                name: {
+                                  type: 'string', example: 'namePublicationType'
+                                },
+                                description: {
+                                  type: 'string', example: 'info publication'
+                                }
+                              }
+                            },
+                            tags: {
+                              type: 'array',
+                              items: {
+                                properties: {
+                                  id: {
+                                    type: 'string', example: '1'
+                                  },
+                                  name: {
+                                    type: 'string', example: 'namePublicationType'
                                   }
-                                },
-                                tags: {
-                                  type: 'array',
-                                  items: {
-                                    properties: {
-                                      id: {
-                                        type: 'string', example: '1'
-                                      },
-                                      name: {
-                                        type: 'string', example: 'namePublicationType'
-                                      }
-                                    }
-                                  }
-                                },
-                                images_publication: {
-                                  type: 'array',
-                                  items: {
-                                    properties: {
-                                      id: {
-                                        type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                                      },
-                                      key_s3: {
-                                        type: 'string', example: 'publications-images-01a612f1-fdcc-4a1c-88c1-bc3hesz4ac12-ba66cf46-66e3-40eb-8b7c-0b66aadaaee'
-                                      },
-                                      image_url: {
-                                        type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
-                                      }
-                                    }
+                                }
+                              }
+                            },
+                            images_publication: {
+                              type: 'array',
+                              items: {
+                                properties: {
+                                  id: {
+                                    type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                  },
+                                  key_s3: {
+                                    type: 'string', example: 'publications-images-01a612f1-fdcc-4a1c-88c1-bc3hesz4ac12-ba66cf46-66e3-40eb-8b7c-0b66aadaaee'
+                                  },
+                                  image_url: {
+                                    type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
                                   }
                                 }
                               }
@@ -1371,20 +1388,18 @@ const options = {
                   schema: {
                     type: 'object',
                     properties: {
-                      results: {
-                        type: 'object',
-                        properties: {
-                          images: {
-                            type: 'array',
-                            items: {
-                              properties: {
-                                id: {
-                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                                },
-                                image_url: {
-                                  type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
-                                }
-                              }
+                      images: {
+                        type: 'array',
+                        items: {
+                          properties: {
+                            id: {
+                              type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                            },
+                            key_s3: {
+                              type: 'string', example: "https://bucket.region.amazonaws.com/publications-images-01a503f1......."
+                            },
+                            image_url: {
+                              type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
                             }
                           }
                         }
@@ -1433,7 +1448,7 @@ const options = {
               `<ul> 
               <li><strong>Only 3 images are allowed maximum</strong></li> 
               <li>Only <strong>jpg, jpeg and png </strong> image formats are allowed</li> 
-              <li>The image can only weigh a <strong>maximum of 3mb</strong></li>
+              <li>The image can only weigh a <strong>maximum of 1mb</strong></li>
               <li>There is no resolution limit it will be resized to 1920x1080</li> 
               </ul>`,
             content: {
@@ -2109,6 +2124,14 @@ const options = {
                             type: 'integer',
                             example: '5'
                           },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          currentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
                           rows: {
                             type: 'array',
                             items: {
@@ -2219,7 +2242,7 @@ const options = {
                                     }
                                   }
                                 }
-                              
+
                               }
                             }
                           }

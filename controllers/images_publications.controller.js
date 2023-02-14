@@ -4,7 +4,7 @@ const util = require('util')
 const uuid = require('uuid')
 const { uploadFile, getObjectSignedUrl, deleteFile, getFileStream } = require('../libs/s3')
 const sharp = require('sharp')
-const { log } = require('console')
+const CustomError = require('../utils/custom-error')
 
 
 const unlinkFile = util.promisify(fs.unlink)
@@ -17,6 +17,7 @@ const uploadImagePublication = async (request, response, next) => {
   const files = request.files
   try {
 
+    if(files.length){
     let imagesKeys = []
     await imagesPublicationsService.publicationImagesExist(idPublication)
 
@@ -38,10 +39,12 @@ const uploadImagePublication = async (request, response, next) => {
     await Promise.all(files.map(async (file) => {
       await unlinkFile(file.path)
     }))
-
     return response
       .status(200)
       .json({ results: { message: 'success upload', images: imagesKeys } });
+  }else{
+    throw new CustomError('Images were not received', 404, 'Not Found')
+  }
 
   } catch (error) {
     if (files) {
