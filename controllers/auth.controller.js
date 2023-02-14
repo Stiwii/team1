@@ -15,7 +15,7 @@ const logIn = async (request, response, next) => {
     const token = jwt.sign({
       id: user.id,
       email: user.email,
-      role: user.profile[0].role.name,
+      role: user.profile[1].role.name,
       profileId: user.profile[0].id
     }, process.env.JWT_SECRET_WORD,
     { expiresIn: '24h' })
@@ -24,7 +24,7 @@ const logIn = async (request, response, next) => {
       const tokenAdmin = jwt.sign({
         id: user.id,
         email: user.email,
-        role: user.profile[1].role.name,
+        role: user.profile[0].role.name,
         profileId: user.profile[1].id
       }, process.env.JWT_SECRET_WORD,
       { expiresIn: '24h' })

@@ -4,7 +4,7 @@ const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 const votesService = new VotesService()
 
-const getVotes = async (request, response, next) => {
+const getMyVotes = async (request, response, next) => {
   try {
     let query = request.query
     let { page, size } = query
@@ -50,27 +50,6 @@ const addVote = async (request, response, next) => {
   }
 }
 
-// const getVote = async (request, response, next) => {
-//   try {
-//     let profileId = request.user.profileId
-//     let votes = await votesService.findAndCount(profileId)
-//     return response.json({ results: votes })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const updateVote = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let { publication_id } = request.body
-//     let vote = await votesService.updateVote(id, { publication_id })
-//     return response.json({ results: vote })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
 const removeVote = async (request, response, next) => {
   try {
     let { id } = request.params
@@ -82,8 +61,7 @@ const removeVote = async (request, response, next) => {
 }
 
 module.exports = {
-  getVotes,
+  getMyVotes,
   addVote,
-  // getVote,
   removeVote
 }

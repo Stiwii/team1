@@ -14,11 +14,11 @@ const {
   destroyAllImagesByPublication,
   getFileImageByPublication,
   destroyImageByPublication } = require('../controllers/images_publications.controller')
-const { getPublications, getPublication, addPublication, removePublication } = require('../controllers/publications.controller')
+const { getAllPublications, getPublication, addPublication, removePublication } = require('../controllers/publications.controller')
 const { addVote } = require('../controllers/votes.controller')
 
 router.route('/')
-  .get(checkRequest('query', querySchema), getPublications)
+  .get(checkRequest('query', querySchema), getAllPublications)
   .post(passportJWT.authenticate('jwt', { session: false }), checkRequest('body', addPublicationSchema), addPublication)
 
 router.route('/:idPublication')

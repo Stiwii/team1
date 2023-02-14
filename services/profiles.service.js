@@ -66,46 +66,6 @@ class ProfilesService {
     return profile
   }
 
-  // async updateProfile(id, obj) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let profile = await models.Profiles.findByPk(id)
-
-  //     if (!profile) throw new CustomError('Not found profile', 404, 'Not Found')
-
-  //     let updatedProfile = await profile.update(obj, {
-  //       where: {
-  //         id: id
-  //       }
-  //     }, { transaction })
-
-  //     await transaction.commit()
-
-  //     return updatedProfile
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
-
-  // async removeProfile(id) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let profile = await models.Profiles.findByPk(id)
-
-  //     if (!profile) throw new CustomError('Not found profile', 404, 'Not Found')
-
-  //     await profile.destroy({ transaction })
-
-  //     await transaction.commit()
-
-  //     return profile
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
-
 }
 
 module.exports = ProfilesService

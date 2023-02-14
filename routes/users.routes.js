@@ -12,8 +12,8 @@ const {
   getInfoUser
 } = require('../controllers/users.controller')
 
-const { getVotes } = require('../controllers/votes.controller')
-const {  getPublicationsofUser } = require('../controllers/publications.controller')
+const { getMyVotes } = require('../controllers/votes.controller')
+const {  getPublicationsByUser } = require('../controllers/publications.controller')
 
 //? this route is administrave
 router.route('/')
@@ -27,9 +27,9 @@ router.route('/:idUSer')
 
 
 router.route('/:idUSer/votes')
-  .get(passportJWT.authenticate('jwt', { session: false }),checkRequest('query',querySchema),getVotes)
+  .get(passportJWT.authenticate('jwt', { session: false }),checkRequest('query',querySchema),getMyVotes)
 
 router.route('/:idUSer/publications')
-  .get(passportJWT.authenticate('jwt', { session: false }),checkRequest('query',querySchema),getPublicationsofUser)
+  .get(passportJWT.authenticate('jwt', { session: false }),checkRequest('query',querySchema),getPublicationsByUser)
 
 module.exports = router

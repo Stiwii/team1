@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       attributes: ['id', 'key_s3', 'publication_id', 'image_url']
     },
     images_publication: {
-      attributes: ['id', 'key_s3']
+      attributes: ['id', 'key_s3','image_url']
     },
     virtual: {
       attributes: ['id', 'key_s3', 'singedURL']

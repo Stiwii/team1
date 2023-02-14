@@ -20,50 +20,6 @@ const getCities = async (request, response, next) => {
   }
 }
 
-// const addCity = async (request, response, next) => {
-//   try {
-//     let { body } = request
-//     let city = await citiesService.createCity(body)
-//     return response.status(201).json({ results: city })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const getCity = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let cities = await citiesService.getCityOr404(id)
-//     return response.json({ results: cities })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const updateCity = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let { body } = request
-//     let city = await citiesService.updateCity(id, body)
-//     return response.json({ results: city })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const removeCity = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let city = await citiesService.removeCity(id)
-//     return response.json({ results: city, message: 'removed' })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
 module.exports = {
-  getCities,
-  // addCity,
-  // getCity,
-  // removeCity
+  getCities
 }

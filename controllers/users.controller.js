@@ -1,6 +1,5 @@
 const UsersService = require('../services/users.service')
 const CustomError = require('../utils/custom-error')
-// const mailer = require('../utils/mailer')
 const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 require('dotenv').config()

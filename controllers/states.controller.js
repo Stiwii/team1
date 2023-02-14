@@ -20,50 +20,6 @@ const getStates = async (request, response, next) => {
   }
 }
 
-// const addState = async (request, response, next) => {
-//   try {
-//     let { body } = request
-//     let state = await statesService.createState(body)
-//     return response.status(201).json({ results: state })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const getState = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let states = await statesService.getStateOr404(id)
-//     return response.json({ results: states })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const updateState = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let { name } = request.body
-//     let state = await statesService.updateState(id, { name })
-//     return response.json({ results: state })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const removeState = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let state = await statesService.removeState(id)
-//     return response.json({ results: state, message: 'removed' })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
 module.exports = {
-  getStates,
-  // addState,
-  // getState,
-  // removeState
+  getStates
 }

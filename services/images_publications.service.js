@@ -11,13 +11,12 @@ class ImagesPublicationsService {
   constructor() {
   }
 
-  async createImage(idImage, fileKey, publicationId, imageUrl) {
+  async createImage(idImage, fileKey, publicationId) {
     const transaction = await models.sequelize.transaction()
     try {
       let newImage = await models.Images_publications.create({
         id: idImage,
         key_s3: fileKey,
-        image_url: imageUrl, // NOT ORIGINAL
         publication_id: publicationId
       }, { transaction })
       await transaction.commit()

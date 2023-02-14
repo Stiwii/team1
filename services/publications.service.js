@@ -1,13 +1,14 @@
 const models = require('../database/models')
 const uuid = require('uuid')
 const { Op, cast, literal } = require('sequelize')
+const { getObjectSignedUrl } = require('../libs/s3')
 const CustomError = require('../utils/custom-error')
 
 class PublicationsService {
 
   constructor() {
   }
-  async findAndCount(query) {
+  async findAndCountAllPublications(query) {
     const { limit, offset, tags } = query
 
     const options = {
@@ -80,10 +81,17 @@ class PublicationsService {
     options.distinct = true
 
     const publications = await models.Publications.scope('get_publication').findAndCountAll(options)
+
+    await Promise.all(publications.rows.map(async (publication) => {
+      await Promise.all(publication.images_publication.map(async (image) => {
+        image.image_url = await getObjectSignedUrl(image.key_s3)
+      }))
+    }))
+    
     return publications
   }
 
-  async findAndCount2(query, profileId) {
+  async findAndCountAllPublicationsByUser(query, profileId) {
     const options = {
       where: { profile_id: profileId },
       attributes: {
@@ -92,9 +100,30 @@ class PublicationsService {
         ]
       },
       include: [{
+        model: models.Cities.scope('get_city'),
+        as: 'city',
+        include: {
+          model: models.States.scope('get_state'),
+          as: 'state',
+          include: {
+            model: models.Countries.scope('public_view')
+          }
+        }
+      }, {
+        model: models.Publications_types.scope('public_view'),
+        as: 'publication_type',
+      },
+      {
+        model: models.Tags.scope('no_timestamps'),
+        as: 'tags',
+        through: {
+          attributes: []
+        }
+      }, {
         model: models.Images_publications.scope('images_publication'),
         as: 'images_publication'
-      }]
+      }
+      ]
     }
 
     const { limit, offset } = query
@@ -105,8 +134,13 @@ class PublicationsService {
 
     options.distinct = true
 
-    const votes = await models.Publications.scope('public_view').findAndCountAll(options)
-    return votes
+    const publications = await models.Publications.scope('public_view').findAndCountAll(options)
+    await Promise.all(publications.rows.map(async (publication) => {
+      await Promise.all(publication.images_publication.map(async (image) => {
+        image.image_url = await getObjectSignedUrl(image.key_s3)
+      }))
+    }))
+    return publications
   }
 
   async createPublication({ profile_id, idPublicationType, title, description, urlShare, tags }) {
@@ -133,18 +167,10 @@ class PublicationsService {
       throw error
     }
   }
-  //Return Instance if we do not converted to json (or raw:true)
-  // async getPublicationOr404(id) {
-  //   let publication = await models.Publications.findByPk(id)
-
-  //   if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
-
-  //   return publication
-  // }
 
   //Return not an Instance raw:true | we also can converted to Json instead
   async getPublicationOr404(idPublication) {
-    // let publication = await models.Publications.findByPk(id, { raw: true })
+
     let publication = await models.Publications.scope('get_publication').findOne({
       where: {
         id: idPublication
@@ -181,22 +207,13 @@ class PublicationsService {
       }
       ]
     })
+    await Promise.all(publication.images_publication.map(async (image) => {
+      image.image_url = await getObjectSignedUrl(image.key_s3)
+    }
+    ))
     if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
-
     return publication
   }
-
-  async findPublicationByProfileOr404(profileId) {
-    let publication = await models.Publications.findAndCountAll({
-      where: {
-        profile_id: profileId
-      }
-    })
-    if (!publication) throw new CustomError('Publication with the user profile was not found', 404, 'Not Found')
-    return publication
-  }
-
-
 
   async updatePublication(id, obj) {
     const transaction = await models.sequelize.transaction()

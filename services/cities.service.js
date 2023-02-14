@@ -32,22 +32,6 @@ class CitiesService {
     return cities
   }
 
-  // async createCity(obj) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let newCity = await models.Cities.create({
-  //       id: uuid.v4(),
-  //       state_id: obj.state_id,
-  //       name: obj.name
-  //     }, { transaction })
-
-  //     await transaction.commit()
-  //     return newCity
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
   //Return Instance if we do not converted to json (or raw:true)
   async getCityOr404(id) {
     let city = await models.Cities.findByPk(id)
@@ -62,46 +46,6 @@ class CitiesService {
     let city = await models.Cities.findByPk(id, { raw: true })
     return city
   }
-
-  // async updateCity(id, obj) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let city = await models.Cities.findByPk(id)
-
-  //     if (!city) throw new CustomError('Not found City', 404, 'Not Found')
-
-  //     let updatedCity = await city.update(obj, {
-  //       where: {
-  //         id: id
-  //       }
-  //     }, { transaction })
-
-  //     await transaction.commit()
-
-  //     return updatedCity
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
-
-  // async removeCity(id) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let city = await models.Cities.findByPk(id)
-
-  //     if (!city) throw new CustomError('Not found City', 404, 'Not Found')
-
-  //     await city.destroy({ transaction })
-
-  //     await transaction.commit()
-
-  //     return city
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
 }
 
 module.exports = CitiesService

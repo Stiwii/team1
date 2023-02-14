@@ -32,20 +32,6 @@ class PublicationsTypesService {
     return publicationsTypes
   }
 
-  // async createPublicationType(obj) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let newPublicationType = await models.Publications_types.create({
-  //       name: obj.name,
-  //       description: obj.description
-  //     }, { transaction })
-  //     await transaction.commit()
-  //     return newPublicationType
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
   //Return Instance if we do not converted to json (or raw:true)
 
   async getPublicationTypeOr404(idPublicationType) {
@@ -61,37 +47,6 @@ class PublicationsTypesService {
     let publicationType = await models.Publications_types.findByPk(idPublicationType, { raw: true })
     return publicationType
   }
-  // async updatePublicationType(id, obj) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let publicationType = await models.Publications_types.findByPk(id)
-  //     if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
-  //     let updatedPublicationType = await models.Publications_types.update(obj, {
-  //       where: {
-  //         id: id
-  //       }
-  //     }, { transaction })
-  //     await transaction.commit()
-  //     return updatedPublicationType
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
-
-  // async removePublicationType(id) {
-  //   const transaction = await models.sequelize.transaction()
-  //   try {
-  //     let publicationType = await models.Publications_types.findByPk(id)
-  //     if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
-  //     await publicationType.destroy({ transaction })
-  //     await transaction.commit()
-  //     return publicationType
-  //   } catch (error) {
-  //     await transaction.rollback()
-  //     throw error
-  //   }
-  // }
 
 }
 

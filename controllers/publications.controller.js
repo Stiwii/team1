@@ -9,7 +9,7 @@ const publicationsService = new PublicationsService()
 const publicationsTypeService = new PublicationsTypeService()
 const tagsService = new TagsService()
 
-const getPublications = async (request, response, next) => {
+const getAllPublications = async (request, response, next) => {
   try {
     let query = request.query
     let { page, size, tags, publicationsTypesIds, description, title } = query
@@ -22,7 +22,7 @@ const getPublications = async (request, response, next) => {
     query.title = title
     query.description = description
 
-    let publications = await publicationsService.findAndCount(query)
+    let publications = await publicationsService.findAndCountAllPublications(query)
     const results = getPagingData(publications, page, limit)
     return response.json({ results: results })
 
@@ -31,7 +31,7 @@ const getPublications = async (request, response, next) => {
   }
 }
 
-const getPublicationsofUser = async (request, response, next) => {
+const getPublicationsByUser = async (request, response, next) => {
   try {
     let query = request.query
     let { page, size, tags } = query
@@ -44,7 +44,7 @@ const getPublicationsofUser = async (request, response, next) => {
     const profileId = request.user.profileId
     const userId = request.user.id
     if (idUSer == userId) {
-      let publications = await publicationsService.findAndCount2(query, profileId)
+      let publications = await publicationsService.findAndCountAllPublicationsByUser(query, profileId)
       const results = getPagingData(publications, page, limit)
       return response.json({ results: results })
     } else {
@@ -73,34 +73,6 @@ const getPublication = async (request, response, next) => {
   try {
     let { idPublication } = request.params
     let publication = await publicationsService.getPublicationOr404(idPublication)
-    //transform publication to plaintext and mantain your attributes.
-    let plainPublication = publication.get({ plain: true })
-    // this promise modify directly publication 
-    //funciona no sabemos por que 
-    await Promise.all(plainPublication.images_publication.map(async (image) => {
-      image.imageURL = await getObjectSignedUrl(image.key_s3)
-    }
-    //
-    ))
-    return response.json({ results: publication })
-  } catch (error) {
-    next(error)
-  }
-}
-
-const getPublicationsByUser = async (request, response, next) => {
-  try {
-    let profileId = request.user.profileId
-    let publication = await publicationsService.findPublicationByProfileOr404(profileId)
-    //transform publication to plaintext and mantain your attributes.
-    let plainPublication = publication.get({ plain: true })
-    // this promise modify directly publication 
-    //funciona no sabemos por que 
-    await Promise.all(plainPublication.images_publication.map(async (image) => {
-      image.imageURL = await getObjectSignedUrl(image.key_s3)
-    }
-    //
-    ))
     return response.json({ results: publication })
   } catch (error) {
     next(error)
@@ -130,11 +102,10 @@ const removePublication = async (request, response, next) => {
 }
 
 module.exports = {
-  getPublications,
-  getPublicationsofUser,
+  getAllPublications,
+  getPublicationsByUser,
   addPublication,
   getPublication,
   updatePublication,
-  removePublication,
-  getPublicationsByUser
+  removePublication
 }

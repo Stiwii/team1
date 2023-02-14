@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       Publications.belongsTo(models.Cities, { as: 'city', foreignKey: 'city_id' })
       Publications.hasMany(models.Votes, { as: 'votes', foreignKey: 'publication_id' })
       Publications.hasMany(models.Images_publications, { as: 'images_publication', foreignKey: 'publication_id' })
-      Publications.belongsToMany(models.Tags, {as: 'tags', through: models.Publications_tags, foreignKey: 'publication_id'})
+      Publications.belongsToMany(models.Tags, { as: 'tags', through: models.Publications_tags, foreignKey: 'publication_id' })
     }
   }
   Publications.init({
@@ -32,20 +32,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING,
-      validate:{
-        notEmpty:true
+      validate: {
+        notEmpty: true
       }
     },
     description: {
       type: DataTypes.TEXT,
-      validate:{
-        notEmpty:true
+      validate: {
+        notEmpty: true
       }
     },
     content: {
       type: DataTypes.TEXT,
-      validate:{
-        notEmpty:true
+      validate: {
+        notEmpty: true
       }
     },
     picture: {
@@ -53,29 +53,30 @@ module.exports = (sequelize, DataTypes) => {
     },
     city_id: {
       type: DataTypes.BIGINT,
-      validate:{
-        notEmpty:true
+      validate: {
+        notEmpty: true
       }
     }
-  }, {
-    sequelize,
-    modelName: 'Publications',
-    tableName: 'publications',  // y la tabla en la DB para ser explicitos
-    underscored: true,
-    timestamps: true,
-    // Los scopes son útiles para estandarizar dónde se regresa información  
-    // y minimizar que se nos escape algo
-    scopes: {
-      public_view: {
-        attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id']
+  },
+    {
+      sequelize,
+      modelName: 'Publications',
+      tableName: 'publications',  // y la tabla en la DB para ser explicitos
+      underscored: true,
+      timestamps: true,
+      // Los scopes son útiles para estandarizar dónde se regresa información  
+      // y minimizar que se nos escape algo
+      scopes: {
+        public_view: {
+          attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id']
+        },
+        get_publication: {
+          attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture', 'created_at', 'updated_at']
+        },
+        no_timestamps: {
+          attributes: { exclude: ['created_at', 'updated_at'] }
+        },
       },
-      get_publication: {
-        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture','created_at', 'updated_at']
-      },
-      no_timestamps: {
-        attributes: { exclude: ['created_at', 'updated_at'] }
-      },
-    },
-  })
+    })
   return Publications
 }

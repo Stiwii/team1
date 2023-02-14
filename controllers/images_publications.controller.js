@@ -30,8 +30,8 @@ const uploadImagePublication = async (request, response, next) => {
       await uploadFile(fileResize, fileKey, file.mimetype)
 
       // let newImagePublication = await imagesPublicationsService.createImage(idImage, fileKey, idPublication) // ORIGINAL
-      let imageUrl = await getObjectSignedUrl(fileKey)
-      let newImagePublication = await imagesPublicationsService.createImage(idImage, fileKey, idPublication, imageUrl)
+      // let imageUrl = await getObjectSignedUrl(fileKey)
+      let newImagePublication = await imagesPublicationsService.createImage(idImage, fileKey, idPublication)
 
       imagesKeys.push(newImagePublication.key_s3)
     }))
@@ -85,7 +85,6 @@ const getUrlAllImagesByPublication = async (request, response, next) => {
   try {
     const { idPublication } = request.params;
     const imagesPublication = await imagesPublicationsService.getImagesByPublicationsOr404(idPublication)
-    // console.log(imagesPublication[1].key_s3)
 
     const imgPublications = await Promise.all(imagesPublication.map(async (imagePublication) => {
       let imageURL = await getObjectSignedUrl(imagePublication.key_s3)

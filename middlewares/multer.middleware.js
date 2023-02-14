@@ -3,7 +3,7 @@ const multer = require('multer')
 const multerPublicationsPhotos = multer({
   dest: 'uploads/publications/photos/',
   limits: {
-    fileSize: 3145728, // 3 Mb
+    fileSize: 1048576, // 1 Mb
   },
   fileFilter: (request, file, cb) => {
     //In case of multer not implement the escenario, put this

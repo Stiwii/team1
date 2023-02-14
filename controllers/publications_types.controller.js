@@ -20,16 +20,6 @@ const getPublicationsTypes = async (request, response, next) => {
   }
 }
 
-// const addPublicationType = async (request, response, next) => {
-//   try {
-//     let { body } = request
-//     let publicationType = await publicationsTypesService.createPublicationType(body)
-//     return response.status(201).json({ results: publicationType })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
 const getPublicationType = async (request, response, next) => {
   try {
     let { idPublicationType } = request.params
@@ -40,31 +30,7 @@ const getPublicationType = async (request, response, next) => {
   }
 }
 
-// const updatePublicationType = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let { name } = request.body
-//     let publicationType = await publicationsTypesService.updatePublicationType(id, { name })
-//     return response.json({ results: publicationType })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// const removePublicationType = async (request, response, next) => {
-//   try {
-//     let { id } = request.params
-//     let publicationType = await publicationsTypesService.removePublicationType(id)
-//     return response.json({ results: publicationType, message: 'removed' })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
 module.exports = {
   getPublicationsTypes,
-  // addPublicationType,s
-  getPublicationType,
-  // updatePublicationType,
-  // removePublicationType
+  getPublicationType
 }

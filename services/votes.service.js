@@ -2,6 +2,7 @@ const models = require('../database/models')
 const { Op,cast, literal } = require('sequelize')
 const CustomError = require('../utils/custom-error')
 const PublicationsService = require('../services/publications.service')
+const { getObjectSignedUrl } = require('../libs/s3')
 
 const publicationsService = new PublicationsService()
 class VotesService {
@@ -56,6 +57,12 @@ class VotesService {
 
     const votes = await models.Votes.scope('public_view').findAndCountAll(options)
     // const votes = await models.Publications_tags.findAndCountAll(options)
+
+    await Promise.all(votes.rows.map(async (vote) => {
+      await Promise.all(vote.Publication.images_publication.map(async (image) => {
+        image.image_url = await getObjectSignedUrl(image.key_s3)
+      }))
+    }))
     return votes
   }
 
