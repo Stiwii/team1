@@ -29,12 +29,12 @@ const logIn = async (request, response, next) => {
       }, process.env.JWT_SECRET_WORD,
       { expiresIn: '24h' })
 
-      response.status(200).json({
+      return response.status(200).json({
         message: 'Correct Credentials!',
         token: [{ 'public': token, 'admin': tokenAdmin }]
       })
     }
-    response.status(200).json({
+    return response.status(200).json({
       message: 'Correct Credentials!',
       token: [{ 'public': token }]
     })

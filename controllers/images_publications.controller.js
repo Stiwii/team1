@@ -17,34 +17,34 @@ const uploadImagePublication = async (request, response, next) => {
   const files = request.files
   try {
 
-    if(files.length){
-    let imagesKeys = []
-    await imagesPublicationsService.publicationImagesExist(idPublication)
+    if (files.length) {
+      let imagesKeys = []
+      await imagesPublicationsService.publicationImagesExist(idPublication)
 
-    await Promise.all(files.map(async (file) => {
+      await Promise.all(files.map(async (file) => {
 
-      const idImage = uuid.v4()
-      const fileResize = await sharp(file.path)
-        .resize({ height: 1920, width: 1080, fit: "contain" })
-        .toBuffer()
-      let fileKey = `publications-images-${idPublication}-${idImage}`
-      await uploadFile(fileResize, fileKey, file.mimetype)
+        const idImage = uuid.v4()
+        const fileResize = await sharp(file.path)
+          .resize({ height: 1920, width: 1080, fit: "contain" })
+          .toBuffer()
+        let fileKey = `publications-images-${idPublication}-${idImage}`
+        await uploadFile(fileResize, fileKey, file.mimetype)
 
-      // let newImagePublication = await imagesPublicationsService.createImage(idImage, fileKey, idPublication) // ORIGINAL
-      // let imageUrl = await getObjectSignedUrl(fileKey)
-      let newImagePublication = await imagesPublicationsService.createImage(idImage, fileKey, idPublication)
+        // let newImagePublication = await imagesPublicationsService.createImage(idImage, fileKey, idPublication) // ORIGINAL
+        // let imageUrl = await getObjectSignedUrl(fileKey)
+        let newImagePublication = await imagesPublicationsService.createImage(idImage, fileKey, idPublication)
 
-      imagesKeys.push(newImagePublication.key_s3)
-    }))
-    await Promise.all(files.map(async (file) => {
-      await unlinkFile(file.path)
-    }))
-    return response
-      .status(200)
-      .json({ results: { message: 'success upload', images: imagesKeys } });
-  }else{
-    throw new CustomError('Images were not received', 404, 'Not Found')
-  }
+        imagesKeys.push(newImagePublication.key_s3)
+      }))
+      await Promise.all(files.map(async (file) => {
+        await unlinkFile(file.path)
+      }))
+      return response
+        .status(200)
+        .json({ results: { message: 'success upload', images: imagesKeys } });
+    } else {
+      throw new CustomError('Images were not received', 404, 'Not Found')
+    }
 
   } catch (error) {
     if (files) {
@@ -94,7 +94,7 @@ const getUrlAllImagesByPublication = async (request, response, next) => {
       imagePublication.image_url = imageURL
       return imagePublication
     }))
-  
+
     return response.status(200).json({ images: imgPublications })
   } catch (error) {
     next(error)

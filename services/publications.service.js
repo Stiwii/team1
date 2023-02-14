@@ -82,15 +82,20 @@ class PublicationsService {
 
     const publications = await models.Publications.scope('get_publication').findAndCountAll(options)
 
-    await Promise.all(publications.rows.map(async (publication,i) => {
-      await Promise.all(publication.images_publication.map(async (image,j) => {
-        image.image_url = await getObjectSignedUrl(image.key_s3)
+    await Promise.all(publications.rows.map(async (publication, i) => {
+      await Promise.all(publication.images_publication.map(async (image, j) => {
+        try {
+          image.image_url = await getObjectSignedUrl(image.key_s3)
+        } catch (error) {
+          image.image_url = null 
+          image.error = 'Error to load image'
+        }
         // console.log(">>>>>>>>>>>>>; ",publications.rows[i].images_publication[j]);
         // const keyx = publications.rows[i].images_publication[j].key_s3
         // delete publications.rows[i].images_publication[j][keyx]
       }))
     }))
-    
+
     return publications
   }
 
@@ -140,7 +145,12 @@ class PublicationsService {
     const publications = await models.Publications.scope('public_view').findAndCountAll(options)
     await Promise.all(publications.rows.map(async (publication) => {
       await Promise.all(publication.images_publication.map(async (image) => {
-        image.image_url = await getObjectSignedUrl(image.key_s3)
+        try {
+          image.image_url = await getObjectSignedUrl(image.key_s3)
+        } catch (error) {
+          image.image_url = null 
+          image.error = 'Error to load image'
+        }
       }))
     }))
     return publications
@@ -211,7 +221,12 @@ class PublicationsService {
       ]
     })
     await Promise.all(publication.images_publication.map(async (image) => {
-      image.image_url = await getObjectSignedUrl(image.key_s3)
+      try {
+        image.image_url = await getObjectSignedUrl(image.key_s3)
+      } catch (error) {
+        image.image_url = null 
+        image.error = 'Error to load image'
+      }
     }
     ))
     if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
