@@ -82,9 +82,12 @@ class PublicationsService {
 
     const publications = await models.Publications.scope('get_publication').findAndCountAll(options)
 
-    await Promise.all(publications.rows.map(async (publication) => {
-      await Promise.all(publication.images_publication.map(async (image) => {
+    await Promise.all(publications.rows.map(async (publication,i) => {
+      await Promise.all(publication.images_publication.map(async (image,j) => {
         image.image_url = await getObjectSignedUrl(image.key_s3)
+        // console.log(">>>>>>>>>>>>>; ",publications.rows[i].images_publication[j]);
+        // const keyx = publications.rows[i].images_publication[j].key_s3
+        // delete publications.rows[i].images_publication[j][keyx]
       }))
     }))
     
@@ -250,7 +253,7 @@ class PublicationsService {
 
         return publication
       } else {
-        return null
+        throw new CustomError('Publication was not created by user', 401, 'Unauthorized')
       }
     } catch (error) {
       await transaction.rollback()

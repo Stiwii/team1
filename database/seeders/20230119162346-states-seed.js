@@ -7,7 +7,7 @@ module.exports = {
     try {
       await queryInterface.bulkInsert('states', [
         {
-          id:'1',
+          // id:'1',
           country_id: '1',
           name: 'Sinaloa',
           created_at: new Date(),

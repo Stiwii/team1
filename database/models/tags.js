@@ -17,9 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Tags.init({
     id: {
-      type: DataTypes.BIGINT,
       primaryKey: true,
-      autoIncrement: true
+      type: DataTypes.BIGINT
     },
     name: {
       type: DataTypes.STRING,

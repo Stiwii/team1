@@ -7,21 +7,21 @@ module.exports = {
     try {
       await queryInterface.bulkInsert('publications_types', [
         {
-          id: '1',
+          // id: '1',
           name: 'Marcas y tiendas',
           description: 'Marcas y tiendas',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '2',
+          // id: '2',
           name: 'Artistas y conciertos',
           description: 'concert',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '3',
+          // id: '3',
           name: 'Torneos',
           description: 'Torneos',
           created_at: new Date(),

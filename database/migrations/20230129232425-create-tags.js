@@ -7,8 +7,8 @@ module.exports = {
         id: { // usando Serial
           allowNull: false,
           primaryKey: true,
-          type: Sequelize.BIGINT,
-          autoIncrement: true
+          autoIncrement: true,
+          type: Sequelize.BIGINT
         },
         name: {
           allowNull: false,

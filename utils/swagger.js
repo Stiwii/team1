@@ -47,12 +47,6 @@ const options = {
     ],
     components: {
       securitySchemes: {
-        // jwtAuth: {
-        //   description: '<strong>Add JWT before insert token :</strong> JWT 2sdasd.....dsdsdsd',
-        //   type: 'apiKey',
-        //   in: 'header',
-        //   name: 'Authorization'
-        // }
         bearerAuth: {
           type: 'http',
           description: '<strong>Add JWT Token</strong>',
@@ -1014,6 +1008,9 @@ const options = {
                                       id: {
                                         type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                       },
+                                      key_s3: {
+                                        type: 'string', example: 'publications-images-01a612f1-fdcc-4a1c-88c1-bc3hesz4ac12-ba66cf46-66e3-40eb-8b7c-0b66aadaaee'
+                                      },
                                       image_url: {
                                         type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
                                       }
@@ -1223,6 +1220,9 @@ const options = {
                                     properties: {
                                       id: {
                                         type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                      },
+                                      key_s3: {
+                                        type: 'string', example: 'publications-images-01a612f1-fdcc-4a1c-88c1-bc3hesz4ac12-ba66cf46-66e3-40eb-8b7c-0b66aadaaee'
                                       },
                                       image_url: {
                                         type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
@@ -2002,6 +2002,9 @@ const options = {
                                           id: {
                                             type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                           },
+                                          key_s3: {
+                                            type: 'string', example: 'publications-images-01a612f1-fdcc-4a1c-88c1-bc3hesz4ac12-ba66cf46-66e3-40eb-8b7c-0b66aadaaee'
+                                          },
                                           image_url: {
                                             type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
                                           }
@@ -2128,9 +2131,6 @@ const options = {
                                 picture: {
                                   type: 'string', format: 'url', example: 'www.picture.com'
                                 },
-                                city_id: {
-                                  type: 'integer', example: '1'
-                                },
                                 image_url: {
                                   type: 'string', format: 'url', example: 'www.image.com'
                                 },
@@ -2143,6 +2143,66 @@ const options = {
                                 votes_count: {
                                   type: 'integer', example: '1'
                                 },
+                                City: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'nameCity'
+                                    },
+                                    State: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'nameState'
+                                        },
+                                        Country: {
+                                          type: 'object',
+                                          properties: {
+                                            id: {
+                                              type: 'string', example: '1'
+                                            },
+                                            name: {
+                                              type: 'string', example: 'nameCountry'
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                publication_type_id: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'namePublicationType'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'info publication'
+                                    }
+                                  }
+                                },
+                                tags: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', example: '1'
+                                      },
+                                      name: {
+                                        type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
+                                },
                                 images_publication: {
                                   type: 'array',
                                   items: {
@@ -2150,12 +2210,16 @@ const options = {
                                       id: {
                                         type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                       },
+                                      key_s3: {
+                                        type: 'string', example: 'publications-images-01a612f1-fdcc-4a1c-88c1-bc3hesz4ac12-ba66cf46-66e3-40eb-8b7c-0b66aadaaee'
+                                      },
                                       image_url: {
                                         type: 'string', format: 'url', example: 'https://bucket.region.amazonaws.com/publications-images-01a503f1.......'
                                       }
                                     }
                                   }
                                 }
+                              
                               }
                             }
                           }

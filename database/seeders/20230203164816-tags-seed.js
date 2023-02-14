@@ -7,55 +7,55 @@ module.exports = {
     try {
       await queryInterface.bulkInsert('tags', [
         {
-          id: '1',
+          // id: '1',
           name: 'Ropa y accesorios',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '2',
+          // id: '2',
           name: 'Deportes',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '3',
+          // id: '3',
           name: 'Conciertos',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '4',
+          // id: '4',
           name: 'Meet & Greet',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '5',
+          // id: '5',
           name: 'E-sport',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '6',
+          // id: '6',
           name: 'Pop / Rock',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '7',
+          // id: '7',
           name: 'Tecnologia',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '8',
+          // id: '8',
           name: 'Hogar y Decoracion',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          id: '9',
+          // id: '9',
           name: 'Abastecimiento',
           created_at: new Date(),
           updated_at: new Date()
