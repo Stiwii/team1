@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 const UsersService = require('../services/users.service')
 const { comparePassword } = require('../utils/crypto')
 const usersService = new UsersService()
@@ -26,8 +27,7 @@ class AuthService {
         email: user.email,
         role: user.profile[0].role.name,
         profileId: user.profile[0].id
-      }, process.env.JWT_SECRET_WORD,
-        { expiresIn: '900s' })
+      },process.env.JWT_SECRET_WORD, { expiresIn: '900s' })
       return { user, token }
     } catch (error) {
       throw error
@@ -36,7 +36,7 @@ class AuthService {
 
   async changePassword({ id, exp }, newPassword, token) {
     try {
-      await usersService.verifiedTokenUser(id, token,exp)
+      await usersService.verifiedTokenUser(id, token, exp)
       let restoreUser = await usersService.updatePassword(id, newPassword)
       return restoreUser
     } catch (error) {

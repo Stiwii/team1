@@ -11,7 +11,7 @@ const getUsers = async (request, response, next) => {
     let query = request.query
     let { page, size } = query
     const { limit, offset } = getPagination(page, size, '10')
-    query.limit = limit
+    query.limit = limit 
     query.offset = offset
 
     let users = await usersService.findAndCount(query)
@@ -34,7 +34,7 @@ const addUser = async (request, response, next) => {
 }
 
 const registerUser = async (request, response, next) => {
-  try {
+  try { 
     let { body } = request
     let errorCounter = 0
     let errorMessage = null

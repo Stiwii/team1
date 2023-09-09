@@ -61,7 +61,7 @@ const logIn = async (request, response, next) => {
 const forgetPassword = async (request, response, next) => {
   const { email } = request.body
   try {
-    let errorCounter = 0
+    let errorCounter = 0 
     let errorMessage = null
     let userTokenEmail = await authService.createRecoveryToken(email)
     let user = await usersService.setTokenUser(userTokenEmail.user.id, userTokenEmail.token)
